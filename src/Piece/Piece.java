@@ -1,25 +1,68 @@
 package Piece;
 
-abstract public class Piece {
-    private PieceTypes type;
-    private boolean color;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+abstract public class Piece implements PieceAction, PieceSpecialAction {
+    final private PieceTypes type;
+    final private boolean color;
     // white -true, black -false
 
-    private char[] position ;
+    private int[] position = null;
     // [x y]
+    private int countOfMove ;
 
-    public Piece(PieceTypes type, boolean color, char[] position) {
+    public Piece(PieceTypes type, boolean color, int[] position) {
         this.type = type;
         this.color = color;
-        this.position = position;
+        this.countOfMove = 0;
+        setPosition(position);
     }
 
-    public char[] getPosition() {
+    public int[] getPosition() {
         return position;
     }
 
-    public void setPosition(char[] position) {
-        this.position = position;
+    public void setPosition(int[] position) {
+        this.countOfMove++;
+        if (position.length == 2 && isInBoard(position)) this.position = position;
+
+    }
+
+    public PieceTypes getType() {
+        return type;
+    }
+
+    public boolean getColor() {
+        return color;
+    }
+
+    public int getCountOfMove() {
+        return countOfMove;
+    }
+
+    protected boolean isInBoard(int[] arr) {
+        for (int el : arr) {
+            if (el < 0 || el > 7) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isValidMove(int[] end) {
+        if (isInBoard(end)) return false;
+        for (int[] el : getAvailableMoves()) {
+            if (Arrays.equals(el, end)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+
+        char typeName = this.type.toString().toUpperCase().charAt(0);
+        char colorOfPiece = color ? 'w' : 'b';
+        return "" + typeName + colorOfPiece;
     }
 }
 //        Создание классов фигур (Piece):
@@ -45,3 +88,63 @@ abstract public class Piece {
 //    VERTICAL('8','7','6','5','4','3','2','1'),
 //
 //    HORISONTAL('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h') ;
+
+//    getAvailableMoves в классе Piece - это метод, который определяет и
+//    возвращает все возможные ходы для данной шахматной фигуры с учетом
+//    текущего расположения фигуры на доске и правил ее движения.
+//
+//        Этот метод анализирует расположение фигуры на доске, ее тип и
+//        возможные позиции, куда фигура может сходить на пустой доске.
+//        Он учитывает возможные ходы для конкретной фигуры в соответствии
+//        с правилами шахмат.
+//
+//        Внутри метода getAvailableMoves для каждой фигуры (пешка, конь,
+//        слон, ладья, ферзь или король) определяются все клетки на доске,
+//        куда эта фигура может переместиться. Эти ходы могут быть ограничены
+//        действиями других фигур, границами доски и специфическими правилами
+//        хода для каждой фигуры.
+//
+//        Для примера:
+//
+//        Пешка может двигаться вперед на одну клетку или на две клетки из
+//        начальной позиции, а также может взять фигуру по диагонали.
+//        Конь может сделать ход "буквой Г" - два шага по одной оси и один
+//        шаг по другой (например, два вверх и один влево).
+//        Слон может двигаться по диагонали на любое количество клеток.
+//        Ладья может двигаться по вертикали или горизонтали на любое
+//        количество клеток.
+//        Ферзь может двигаться как слон и ладья в любом направлении.
+//        Король может двигаться на одну клетку в любом направлении.
+//        getAvailableMoves генерирует список или массив возможных ходов для
+//        этой фигуры, которые затем используются для анализа возможных ходов
+//        игрока или оценки состояния игры.
+
+//        isValidMove в Piece:
+//
+//        Этот метод принадлежит конкретной шахматной фигуре (пешка, конь,
+//        слон и т. д.) и определяет, является ли этот ход действительным для
+//        этой фигуры в контексте ее собственных правил движения. Он проверяет,
+//        соответствует ли переданный ход правилам движения конкретной фигуры:
+//        может ли она сделать такой ход на пустой доске, игнорируя другие фигуры
+//        и правила игры. Этот метод может быть использован для проверки, допустимо
+//        ли перемещение в соответствии с возможностями конкретной фигуры.
+//        В целом, isValidMove в ChessBoard работает на уровне доски и правил игры,
+//        тогда как isValidMove в Piece описывает возможные ходы для конкретной фигуры.
+
+//isEnPassant:
+//
+//        Определяет, произошло ли взятие на проходе. В шахматах, когда пешка
+//        преодолевает две клетки из начальной позиции, оставляя соперника
+//        возможность взять её, как если бы она остановилась на одной клетке,
+//        путем взятия пешки на проходе.
+//   isCastling:
+//
+//        Проверяет, произошло ли рокировка. Рокировка - это особый ход, при
+//        котором король и одна из ладей двигаются в одном ходе. Рокировка может
+//        быть короткой (с короткой ладьей) или длинной (с длинной ладьей).
+//   isPromotion:
+//
+//        Определяет, произошло ли превращение пешки. Когда пешка достигает
+//        противоположного конца доски, она может быть превращена в любую другую
+//        фигуру (обычно в ферзя, ладью, слона или коня). Это называется превращением
+//        или продвижением пешки.

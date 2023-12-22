@@ -1,4 +1,8 @@
 import ChessBoard.ChessBoard;
+import Pieces.Pawn;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
@@ -6,7 +10,23 @@ public class Main {
         ChessBoard board =new ChessBoard();
         System.out.println(board);
 
-
+        Pawn pawn = new Pawn( true, new int[]{1,4,});
+       System.out.println(Arrays.toString(pawn.getPosition()));
+        pawn.setPosition(new int[]{2,2});
+        System.out.println(Arrays.toString(pawn.getPosition()));
+        pawn.setPosition(new int[]{7,2});
+        System.out.println(Arrays.toString(pawn.getPosition()));
+       System.out.println(pawn.isPromotion());
+//        pawn.setPosition(new int[]{6,34});
+//        System.out.println(Arrays.toString(pawn.getPosition()));
+//        ArrayList<int[]> pos =pawn.getAvailableMoves();
+//
+//        for (int[] el: pos) {
+//            System.out.println(Arrays.toString(el));
+//        }
+//        System.out.println(Arrays.toString(pawn.getPosition()));
+//        System.out.println(pawn.isValidMove(new int[]{5,3}));
+       System.out.println(pawn);
 
     }
 }
@@ -30,8 +50,8 @@ public class Main {
 //        isCheck
 //        isCheckmate
 //        isStalemate
-//        Метод displayBoard:
 
+//        Метод displayBoard:
 //        Отображение текущей позиции на доске в текстовом виде.
 
 //        Дополнительные методы для других действий в игре:
@@ -45,6 +65,7 @@ public class Main {
 //        базовым для всех фигур.
 //        Реализовать классы для каждой фигуры (Pawn, Rook, Knight,
 //        Bishop, Queen, King).
+
 //        Определить поля:
 //        Тип фигуры
 //        Цвет

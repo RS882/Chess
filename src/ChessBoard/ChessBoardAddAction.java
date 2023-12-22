@@ -2,7 +2,7 @@ package ChessBoard;
 
 public interface ChessBoardAddAction {
 
-    String displayBoard();
+
     void capturing();
 
     void promotingOfPawn();

@@ -19,6 +19,9 @@ public class ChessBoard {
         this.board = board;
     }
 
+    public String displayBoard(){
+        return "displayBoard";
+    }
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder("ChessBoard{");

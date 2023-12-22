@@ -2,11 +2,13 @@ package Piece;
 
 import ChessBoard.ChessBoard;
 
+import java.util.ArrayList;
+
 public interface PieceAction {
 
-    boolean isValidMove(char[] start, char[] end);
+    boolean isValidMove( int[] end);
 
-    char[][] getAvailableMoves(char[] start);
+    ArrayList<int[]> getAvailableMoves();
 }
 //        Метод isValidMove для каждой фигуры:
 //        Проверка корректности хода с учетом их правил.
