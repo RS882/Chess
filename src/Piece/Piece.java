@@ -1,6 +1,6 @@
 package Piece;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 
 abstract public class Piece implements PieceAction, PieceSpecialAction {

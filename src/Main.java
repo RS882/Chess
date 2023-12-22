@@ -1,5 +1,7 @@
 import ChessBoard.ChessBoard;
+import Pieces.Knight;
 import Pieces.Pawn;
+import Pieces.Rook;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,24 +12,18 @@ public class Main {
         ChessBoard board =new ChessBoard();
         System.out.println(board);
 
-        Pawn pawn = new Pawn( true, new int[]{1,4,});
-       System.out.println(Arrays.toString(pawn.getPosition()));
-        pawn.setPosition(new int[]{2,2});
-        System.out.println(Arrays.toString(pawn.getPosition()));
-        pawn.setPosition(new int[]{7,2});
-        System.out.println(Arrays.toString(pawn.getPosition()));
-       System.out.println(pawn.isPromotion());
-//        pawn.setPosition(new int[]{6,34});
-//        System.out.println(Arrays.toString(pawn.getPosition()));
-//        ArrayList<int[]> pos =pawn.getAvailableMoves();
-//
-//        for (int[] el: pos) {
-//            System.out.println(Arrays.toString(el));
-//        }
-//        System.out.println(Arrays.toString(pawn.getPosition()));
-//        System.out.println(pawn.isValidMove(new int[]{5,3}));
-       System.out.println(pawn);
 
+        Knight knight = new Knight(false,new int[]{5,4});
+
+       // Rook rook = new Rook(true, new int[]{1,4,});
+      //  System.out.println(Arrays.toString(rook.getPosition()));
+                ArrayList<int[]> pos =knight.getAvailableMoves();
+
+        for (int[] el: pos) {
+            System.out.println(Arrays.toString(el));
+        }
+
+      //  System.out.println(rook);
     }
 }
 
