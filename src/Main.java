@@ -17,15 +17,17 @@ public class Main {
 
         Queen queen = new Queen(true, new int[]{3,4},0);
 
+        King king =new King(false,new int[]{6,2},3);
+
        // Rook rook = new Rook(true, new int[]{1,4,});
       //  System.out.println(Arrays.toString(rook.getPosition()));
-                ArrayList<int[]> pos =queen.getAvailableMoves();
+                ArrayList<int[]> pos =king.getAvailableMoves();
 
         for (int[] el: pos) {
             System.out.println(Arrays.toString(el));
         }
-
-       System.out.println(bishop);
+        System.out.println(king.isCastling());
+       System.out.println(king);
     }
 }
 
