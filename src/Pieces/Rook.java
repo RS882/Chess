@@ -17,7 +17,6 @@ public class Rook extends Piece {
         int x =this.getPosition()[0];
         int y =this.getPosition()[1];
 
-
         for (int i = 0; i < 8; i++) {
             int[] end = new int[]{i, y};
             if(!Arrays.equals(end, this.getPosition())) res.add(end);

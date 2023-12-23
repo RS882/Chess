@@ -1,8 +1,5 @@
 import ChessBoard.ChessBoard;
-import Pieces.Bishop;
-import Pieces.Knight;
-import Pieces.Pawn;
-import Pieces.Rook;
+import Pieces.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,15 +15,17 @@ public class Main {
 
         Bishop bishop = new Bishop(true, new int[]{3,4},2);
 
+        Queen queen = new Queen(true, new int[]{3,4},0);
+
        // Rook rook = new Rook(true, new int[]{1,4,});
       //  System.out.println(Arrays.toString(rook.getPosition()));
-                ArrayList<int[]> pos =bishop.getAvailableMoves();
+                ArrayList<int[]> pos =queen.getAvailableMoves();
 
         for (int[] el: pos) {
             System.out.println(Arrays.toString(el));
         }
 
-       System.out.println(knight);
+       System.out.println(bishop);
     }
 }
 

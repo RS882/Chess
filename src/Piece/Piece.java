@@ -40,6 +40,10 @@ abstract public class Piece implements PieceAction, PieceSpecialAction {
         return color;
     }
 
+    public int getIdOfPieceThisType() {
+        return idOfPieceThisType;
+    }
+
     public int getCountOfMove() {
         return countOfMove;
     }
@@ -63,12 +67,12 @@ abstract public class Piece implements PieceAction, PieceSpecialAction {
     @Override
     public String toString() {
         char colorOfPiece = color ? 'w' : 'b';
-        if (this.type != PieceTypes.KING || this.type != PieceTypes.QUEEN) {
+        if (this.type.equals(PieceTypes.KING) || this.type.equals(PieceTypes.QUEEN)  ) {
+            String name = this.type.toString().substring(0, 2);
+            return String.format("%s(%s)%n", name, colorOfPiece);
+        } else {
             char typeName = this.type.toString().toUpperCase().charAt(0);
             return String.format("%s%d(%s)%n", typeName, this.idOfPieceThisType, colorOfPiece);
-        } else {
-            String name = this.type.toString().substring(0, 1);
-            return String.format("%s(%s)%n", name, colorOfPiece);
         }
     }
 }
