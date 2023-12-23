@@ -7,21 +7,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Rook extends Piece {
-    public Rook(boolean color, int[] position) {
-        super(PieceTypes.ROOK, color, position);
+    public Rook(boolean color, int[] position, int idOfPieceThisType) {
+        super(PieceTypes.ROOK, color, position, idOfPieceThisType);
     }
 
     @Override
     public ArrayList<int[]> getAvailableMoves() {
         ArrayList<int[]> res = new ArrayList<>();
+        int x =this.getPosition()[0];
+        int y =this.getPosition()[1];
 
-        int[] start = this.getPosition();
 
         for (int i = 0; i < 8; i++) {
-            int[] end = new int[]{i, start[1]};
-            if(!Arrays.equals(end, start)) res.add(end);
-            end = new int[]{start[0], i};
-            if(!Arrays.equals(end, start))res.add(end);
+            int[] end = new int[]{i, y};
+            if(!Arrays.equals(end, this.getPosition())) res.add(end);
+            end = new int[]{x, i};
+            if(!Arrays.equals(end, this.getPosition()))res.add(end);
         }
         return res;
     }

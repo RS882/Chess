@@ -5,37 +5,40 @@ import Piece.PieceTypes;
 import java.util.ArrayList;
 
 public class Knight extends Piece {
-    public Knight( boolean color, int[] position) {
-        super(PieceTypes.KNIGHT, color, position);
+    public Knight( boolean color, int[] position,int idOfPieceThisType) {
+        super(PieceTypes.KNIGHT, color, position, idOfPieceThisType);
     }
 
     @Override
     public ArrayList<int[]> getAvailableMoves() {
         ArrayList<int[]> res = new ArrayList<>();
-        int[] start = this.getPosition();
 
-        int[] end = new int[]{start[0] - 2, start[1] + 1};
+
+        int x =this.getPosition()[0];
+        int y =this.getPosition()[1];
+
+        int[] end = new int[]{ x - 2, y + 1};
         if (this.isInBoard(end)) res.add(end);
 
-         end = new int[]{start[0] - 1, start[1] + 2};
+         end = new int[]{ x - 1, y + 2};
         if (this.isInBoard(end)) res.add(end);
 
-         end = new int[]{start[0] + 1, start[1] + 2};
+         end = new int[]{ x + 1, y + 2};
         if (this.isInBoard(end)) res.add(end);
 
-        end = new int[]{start[0] + 2, start[1] + 1};
+        end = new int[]{ x + 2, y + 1};
         if (this.isInBoard(end)) res.add(end);
 
-        end = new int[]{start[0] + 2, start[1] - 1};
+        end = new int[]{ x + 2, y - 1};
         if (this.isInBoard(end)) res.add(end);
 
-        end = new int[]{start[0] + 1, start[1] - 2};
+        end = new int[]{ x + 1, y - 2};
         if (this.isInBoard(end)) res.add(end);
 
-        end = new int[]{start[0] - 2, start[1] - 1};
+        end = new int[]{ x - 2, y - 1};
         if (this.isInBoard(end)) res.add(end);
 
-        end = new int[]{start[0] - 1, start[1] - 2};
+        end = new int[]{ x - 1, y - 2};
         if (this.isInBoard(end)) res.add(end);
 
         return res;

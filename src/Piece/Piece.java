@@ -2,19 +2,22 @@ package Piece;
 
 
 import java.util.Arrays;
+import java.util.SimpleTimeZone;
 
 abstract public class Piece implements PieceAction, PieceSpecialAction {
     final private PieceTypes type;
     final private boolean color;
     // white -true, black -false
 
+    final private int idOfPieceThisType;
     private int[] position = null;
     // [x y]
-    private int countOfMove ;
+    private int countOfMove;
 
-    public Piece(PieceTypes type, boolean color, int[] position) {
+    public Piece(PieceTypes type, boolean color, int[] position, int idOfPieceThisType) {
         this.type = type;
         this.color = color;
+        this.idOfPieceThisType = idOfPieceThisType;
         this.countOfMove = 0;
         setPosition(position);
     }
@@ -59,10 +62,14 @@ abstract public class Piece implements PieceAction, PieceSpecialAction {
 
     @Override
     public String toString() {
-
-        char typeName = this.type.toString().toUpperCase().charAt(0);
         char colorOfPiece = color ? 'w' : 'b';
-        return "" + typeName + colorOfPiece;
+        if (this.type != PieceTypes.KING || this.type != PieceTypes.QUEEN) {
+            char typeName = this.type.toString().toUpperCase().charAt(0);
+            return String.format("%s%d(%s)%n", typeName, this.idOfPieceThisType, colorOfPiece);
+        } else {
+            String name = this.type.toString().substring(0, 1);
+            return String.format("%s(%s)%n", name, colorOfPiece);
+        }
     }
 }
 //        Создание классов фигур (Piece):
