@@ -1,16 +1,17 @@
 import ChessBoard.ChessBoard;
-import Pieces.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
 
         ChessBoard board =new ChessBoard();
-        System.out.println(board);
+//        System.out.println(board);
+        board.displayBoard();
 
-board.displayBoard();
+//        Test test = new Test();
+//
+//        test.displayBoard();
+
+
 //        Knight knight = new Knight(false,new int[]{5,4},3);
 //
 //        Bishop bishop = new Bishop(true, new int[]{3,4},2);
@@ -18,6 +19,9 @@ board.displayBoard();
 //        Queen queen = new Queen(true, new int[]{3,4},0);
 //
 //        King king =new King(false,new int[]{6,2},3);
+//
+//        System.out.println(PieceTypes.QUEEN.getChar(king.getType(),true));
+//        System.out.println(PieceTypes.QUEEN.getChar(king.getType(),false));
 
        // Rook rook = new Rook(true, new int[]{1,4,});
       //  System.out.println(Arrays.toString(rook.getPosition()));
@@ -133,3 +137,20 @@ board.displayBoard();
 //        Убедиться, что все ходы фигур соответствуют правилам шахмат.
 //        Каждый из этих шагов представляет собой отдельные задачи, которые
 //        необходимо реализовать для создания функциональной шахматной доски в программе.
+
+//    Для запуска игры в шахматы из метода main вашего приложения нужно:
+//
+//        Создать объект класса, реализующего шахматную доску.
+//        Инициализировать начальное расположение фигур на доске.
+//        Иметь цикл, который будет управлять ходами игры (пока игра не закончится).
+//        В цикле обрабатывать ввод пользователя (например, вводить начальную и конечную позиции фигур для хода).
+//        После ввода проверять, является ли ход допустимым на текущей доске.
+//        Если ход допустим, обновить состояние доски, иначе запросить повторный ввод хода.
+//        После каждого хода проверять условия окончания игры (например, шах, мат или ничья).
+//        Вывести сообщение о завершении игры и, если требуется, выйти из цикла.
+//        Это базовая структура. Подробности реализации могут зависеть от способа представления игры и логики обработки ходов.
+
+
+
+
+

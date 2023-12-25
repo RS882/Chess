@@ -13,6 +13,8 @@ public class Pawn extends Piece {
         super(PieceTypes.PAWN, color, position, idOfPieceThisType);
     }
 
+
+
     @Override
     public ArrayList<int[]> getAvailableMoves() {
         ArrayList<int[]> res = new ArrayList<>();

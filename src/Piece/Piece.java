@@ -22,6 +22,8 @@ abstract public class Piece implements PieceAction, PieceSpecialAction {
         setPosition(position);
     }
 
+
+
     public int[] getPosition() {
         return position;
     }
@@ -66,14 +68,8 @@ abstract public class Piece implements PieceAction, PieceSpecialAction {
 
     @Override
     public String toString() {
-        char colorOfPiece = color ? 'b' : 'w';
-        if (this.type.equals(PieceTypes.KING)   ) {
-            String name = this.type.toString().substring(0, 2);
-            return String.format("%s(%s)", name, colorOfPiece);
-        } else {
-            char typeName = this.type.toString().toUpperCase().charAt(0);
-            return String.format("%s%d(%s)", typeName, this.idOfPieceThisType, colorOfPiece);
-        }
+
+        return  PieceTypes.getChar(this.getType(), this.getColor()) ;
     }
 }
 //        Создание классов фигур (Piece):
