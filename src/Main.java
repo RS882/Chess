@@ -1,4 +1,5 @@
 import ChessBoard.ChessBoard;
+import Pieces.Queen;
 
 public class Main {
     public static void main(String[] args) {
@@ -6,6 +7,8 @@ public class Main {
         ChessBoard board =new ChessBoard();
 //        System.out.println(board);
         board.displayBoard();
+        System.out.println( board.isMoveValid());
+
 
 //        Test test = new Test();
 //
@@ -16,7 +19,7 @@ public class Main {
 //
 //        Bishop bishop = new Bishop(true, new int[]{3,4},2);
 //
-//        Queen queen = new Queen(true, new int[]{3,4},0);
+       //Queen queen = new Queen(true, new int[]{3,4},0);
 //
 //        King king =new King(false,new int[]{6,2},3);
 //

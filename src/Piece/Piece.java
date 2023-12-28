@@ -11,7 +11,7 @@ abstract public class Piece implements PieceAction, PieceSpecialAction {
 
     final private int idOfPieceThisType;
     private int[] position = null;
-    // [x y]
+    // [y x]
     private int countOfMove;
 
     public Piece(PieceTypes type, boolean color, int[] position, int idOfPieceThisType) {
@@ -25,7 +25,7 @@ abstract public class Piece implements PieceAction, PieceSpecialAction {
 
 
     public int[] getPosition() {
-        return position;
+        return this.position;
     }
 
     public void setPosition(int[] position) {
@@ -51,15 +51,12 @@ abstract public class Piece implements PieceAction, PieceSpecialAction {
     }
 
     protected boolean isInBoard(int[] arr) {
-        for (int el : arr) {
-            if (el < 0 || el > 7) return false;
-        }
-        return true;
+        return  arr[0] >= 0 && arr[0] <= 7 && arr[1] >= 0 && arr[1] <= 7;
     }
 
     @Override
     public boolean isValidMove(int[] end) {
-        if (isInBoard(end)) return false;
+        if (!isInBoard(end)) return false;
         for (int[] el : getAvailableMoves()) {
             if (Arrays.equals(el, end)) return true;
         }
@@ -71,6 +68,15 @@ abstract public class Piece implements PieceAction, PieceSpecialAction {
 
         return  PieceTypes.getChar(this.getType(), this.getColor()) ;
     }
+
+//    @Override
+//    public String toString() {
+//        return "Piece{" +
+//                "type=" + type +
+//                ", color=" + color +
+//                ", position=" + Arrays.toString(position) +
+//                '}';
+//    }
 }
 //        Создание классов фигур (Piece):
 //
