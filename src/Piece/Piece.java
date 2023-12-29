@@ -2,6 +2,7 @@ package Piece;
 
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.SimpleTimeZone;
 
 abstract public class Piece implements PieceAction, PieceSpecialAction {
@@ -69,14 +70,18 @@ abstract public class Piece implements PieceAction, PieceSpecialAction {
         return  PieceTypes.getChar(this.getType(), this.getColor()) ;
     }
 
-//    @Override
-//    public String toString() {
-//        return "Piece{" +
-//                "type=" + type +
-//                ", color=" + color +
-//                ", position=" + Arrays.toString(position) +
-//                '}';
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Piece piece = (Piece) o;
+        return this.color == piece.color && this.idOfPieceThisType == piece.idOfPieceThisType && this.type == piece.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, color, idOfPieceThisType);
+    }
 }
 //        Создание классов фигур (Piece):
 //

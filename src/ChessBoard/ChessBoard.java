@@ -6,12 +6,14 @@ import Pieces.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+
 import java.util.function.Predicate;
 
-public class ChessBoard implements ChessBoardMove {
+public class ChessBoard implements ChessBoardMove, ChessBoardAddAction {
 
     private Piece[][] board;
+
+    private Piece lastMove;
 
 
     public ChessBoard() {
@@ -96,10 +98,7 @@ public class ChessBoard implements ChessBoardMove {
             System.out.println("| " + (8 - i));
         }
         System.out.println("   a  b  c d  e f  g  h");
-
-
     }
-
 
     @Override
     public String toString() {
@@ -130,10 +129,9 @@ public class ChessBoard implements ChessBoardMove {
             }
         }
         for (int[] elem : otherPieces) {
-            if (end[0] == elem[0] && end[1] == elem[1]){
-               if(piece.getColor() == this.board[end[0]][end[1]].getColor())  return false;
+            if (end[0] == elem[0] && end[1] == elem[1]) {
+                if (piece.getColor() == this.board[end[0]][end[1]].getColor()) return false;
             }
-
         }
 
         int y = piece.getPosition()[0];
@@ -151,9 +149,14 @@ public class ChessBoard implements ChessBoardMove {
             Predicate<Integer> isPawn2 = dy -> end[0] == y + dy * 2 && end[1] == x && (this.board[y + dy][x] != null
                     || this.board[y + dy * 2][x] != null);
 
-            Predicate<int[]> isPawnEnPas = arr -> y == arr[1] && isPawnRL.test(new int[]{arr[0], 1})
-                    && this.board[y][x + 1].isEnPassant()
-                    || isPawnRL.test(new int[]{arr[0], -1}) && this.board[y][x - 1].isEnPassant();
+            Predicate<int[]> isPawnEnPas = arr ->
+                    y == arr[1]
+                            && ((isPawnRL.test(new int[]{arr[0], 1})
+                            && this.board[y][x + 1].isEnPassant()
+                            && lastMove.equals(this.board[y][x + 1]))
+                            || (isPawnRL.test(new int[]{arr[0], -1})
+                            && this.board[y][x - 1].isEnPassant())
+                            && lastMove.equals(this.board[y][x - 1]));
 
             int step = (piece.getColor()) ? 1 : -1;
 
@@ -163,8 +166,7 @@ public class ChessBoard implements ChessBoardMove {
                     isPawnRL.test(new int[]{step, 1}) || isPawnRL.test(new int[]{step, -1})) return false;
 
         } else if (piece instanceof Rook ||
-                (piece instanceof Queen && (y == end[0] || x == end[1]))
-        ) {
+                (piece instanceof Queen && (y == end[0] || x == end[1]))) {
 
             for (int[] otherPiece : otherPieces) {
 
@@ -192,22 +194,63 @@ public class ChessBoard implements ChessBoardMove {
 
         }
         return piece.isValidMove(end);
-
-
     }
-
 
     public boolean isMoveValid() {
         return isMoveValid(
                 new Queen(true, new int[]{3, 3},
-                        0), new int[]{3, 4});
+                        0), new int[]{2, 3});
     }
 
     @Override
     public void movePiece(Piece piece, int[] end) {
+        this.lastMove = piece;
 
+        if (isMoveValid(piece, end)) {
+            int x = end[1];
+            int y = end[0];
+            System.out.printf("%s moves %s -> %s.%n",
+                    piece.getType(),
+                    coverNubToCnessCord(piece.getPosition()),
+                    coverNubToCnessCord(end));
+            if (this.board[y][x] != null) capturing(piece, this.board[y][x]);
+
+            this.board[piece.getPosition()[0]][piece.getPosition()[1]] = null;
+            this.board[y][x] = piece;
+            piece.setPosition(new int[]{y, x});
+
+
+        }
+    }
+    public void movePiece() {
+        movePiece(
+        new Rook(false, new int[]{3, 3}, 1),
+                new int[]{5, 3});
     }
 
 
+    @Override
+    public void capturing(Piece move, Piece take) {
+        System.out.printf("%s takes %s on %s.%n",
+                move.getType(),
+                take.getType(),
+                coverNubToCnessCord(take.getPosition()));
+    }
+
+    public static String coverNubToCnessCord(int[] arr) {
+        char[] xArr = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+        char[] yArr = {'8', '7', '6', '5', '4', '3', '2', '1'};
+        return "" + xArr[arr[1]] + yArr[arr[0]];
+    }
+
+    @Override
+    public void promotingOfPawn() {
+
+    }
+
+    @Override
+    public void castling() {
+
+    }
 }
 

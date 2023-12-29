@@ -11,7 +11,12 @@ public class Main {
         ChessBoard board =new ChessBoard();
 //        System.out.println(board);
         board.displayBoard();
-        System.out.println( board.isMoveValid());
+//        System.out.println( board.isMoveValid());
+        board.movePiece();
+        board.displayBoard();
+
+//        System.out.println(board.coverNubToCnessCord(new int[]{3,3}));
+
 
 //        Pawn pawn = new Pawn(true, new int[]{2,3},0);
 //     //     System.out.println(Arrays.toString(pawn.getPosition()));

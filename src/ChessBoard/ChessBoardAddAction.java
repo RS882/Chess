@@ -1,9 +1,11 @@
 package ChessBoard;
 
+import Piece.Piece;
+
 public interface ChessBoardAddAction {
 
 
-    void capturing();
+    void capturing(Piece move, Piece take);
 
     void promotingOfPawn();
 
