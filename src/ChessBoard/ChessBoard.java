@@ -1,15 +1,16 @@
 package ChessBoard;
 
-import Piece.Piece;
+import Piece.*;
 import Pieces.*;
 
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import java.util.List;
 import java.util.function.Predicate;
 
-public class ChessBoard implements ChessBoardMove, ChessBoardAddAction {
+public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoardIsAction {
 
     private Piece[][] board;
 
@@ -113,6 +114,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction {
         res.append(String.format("}%n"));
         return String.valueOf(res);
     }
+
 
     @Override
     public boolean isMoveValid(Piece piece, int[] end) {
@@ -222,9 +224,10 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction {
 
         }
     }
+
     public void movePiece() {
         movePiece(
-        new Rook(false, new int[]{3, 3}, 1),
+                new Rook(false, new int[]{3, 3}, 1),
                 new int[]{5, 3});
     }
 
@@ -251,6 +254,56 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction {
     @Override
     public void castling() {
 
+    }
+
+    @Override
+    public boolean isCheck(boolean color) {
+        ArrayList<Piece> arr = getPieces(!color);
+        Piece king = getPiece(PieceTypes.KING, color).get(0);
+        for (Piece el : arr) {
+            if (el.isValidMove(king.getPosition())) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isCheckmate(boolean color) {
+        return false;
+    }
+
+    @Override
+    public boolean isStalemate() {
+        return false;
+    }
+
+    private ArrayList<Piece> getPieces() {
+        ArrayList<Piece> arr = new ArrayList<>();
+        for (int i = 0; i < this.board[0].length; i++) {
+            for (int j = 0; j < this.board.length; j++) {
+                if (this.board[i][j] != null) {
+                    arr.add(this.board[i][j]);
+                }
+            }
+        }
+        return arr;
+    }
+
+    private ArrayList<Piece> getPieces(boolean color) {
+        ArrayList<Piece> arrC = getPieces();
+        ArrayList<Piece> res = new ArrayList<>();
+        for (Piece elem : arrC) {
+            if (elem.getColor() == color) res.add(elem);
+        }
+        return res;
+    }
+
+    private ArrayList<Piece> getPiece(PieceTypes type, boolean color) {
+        ArrayList<Piece> arrC = getPieces(color);
+        ArrayList<Piece> res = new ArrayList<>();
+        for (Piece elem : arrC) {
+            if (elem.getType() == type) res.add(elem);
+        }
+        return res;
     }
 }
 
