@@ -1,5 +1,9 @@
 import ChessBoard.ChessBoard;
+import Pieces.Pawn;
 import Pieces.Queen;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,6 +13,13 @@ public class Main {
         board.displayBoard();
         System.out.println( board.isMoveValid());
 
+//        Pawn pawn = new Pawn(true, new int[]{2,3},0);
+//     //     System.out.println(Arrays.toString(pawn.getPosition()));
+//                ArrayList<int[]> pos =pawn.getAvailableMoves();
+//
+//        for (int[] el: pos) {
+//            System.out.println(Arrays.toString(el));
+//        }
 
 //        Test test = new Test();
 //

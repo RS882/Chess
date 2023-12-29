@@ -2,11 +2,12 @@ package ChessBoard;
 
 import Piece.Piece;
 import Pieces.*;
-import com.sun.security.jgss.GSSUtil;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class ChessBoard implements ChessBoardMove {
 
@@ -15,10 +16,6 @@ public class ChessBoard implements ChessBoardMove {
 
     public ChessBoard() {
         this.board = new Piece[8][8];
-//        for (int i = 0; i < this.board[0].length; i++) {
-//            for (int j = 0; j < this.board.length; j++) {
-//                this.board[i][j]=null;
-//            }}
         initialazePieces();
 
     }
@@ -129,14 +126,14 @@ public class ChessBoard implements ChessBoardMove {
             for (int j = 0; j < this.board.length; j++) {
                 if (this.board[i][j] != null) {
                     otherPieces.add(this.board[i][j].getPosition());
-                       }
+                }
             }
         }
-        for (int[] elem : otherPieces) {
-            if (end[0] == elem[0] && end[1] == elem[1]) {
-                return false;
-            }
-        }
+//        for (int[] elem : otherPieces) {
+//            if (end[0] == elem[0] && end[1] == elem[1]) {
+//                return false;
+//            }
+//        }
 
         int y = piece.getPosition()[0];
         int x = piece.getPosition()[1];
@@ -144,10 +141,28 @@ public class ChessBoard implements ChessBoardMove {
         if (piece instanceof Knight || piece instanceof King) {
             return true;
         } else if (piece instanceof Pawn) {
-            if ((piece.getColor() && this.board[y + 1][x] != null) ||
-                    (!piece.getColor() && this.board[y - 1][x] != null)) return false;
-        } else if (piece instanceof Rook||
-               ( piece instanceof Queen && (y == end[0] ||  x == end[1]))
+
+            Predicate<int[]> isPawnRL = arr -> end[0] == y + arr[0] && end[1] == x + arr[1]
+                    && this.board[y + arr[0]][x + arr[1]] == null;
+
+            Predicate<Integer> isPawn1 = dy -> end[0] == y + dy && end[1] == x && this.board[y + dy][x] != null;
+
+            Predicate<Integer> isPawn2 = dy -> end[0] == y + dy * 2 && end[1] == x && (this.board[y + dy][x] != null
+                    || this.board[y + dy * 2][x] != null);
+
+            Predicate<int[]> isPawnEnPas = arr -> y == arr[1] && isPawnRL.test(new int[]{arr[0], 1})
+                    && this.board[y][x + 1].isEnPassant()
+                    || isPawnRL.test(new int[]{arr[0], -1}) && this.board[y][x - 1].isEnPassant();
+
+            int step = (piece.getColor()) ? 1 : -1;
+
+            if (isPawnEnPas.test(new int[]{step, 4})) return true;
+
+            if (isPawn1.test(step) || isPawn2.test(step) ||
+                    isPawnRL.test(new int[]{step, 1}) || isPawnRL.test(new int[]{step, -1})) return false;
+
+        } else if (piece instanceof Rook ||
+                (piece instanceof Queen && (y == end[0] || x == end[1]))
         ) {
 
             for (int[] otherPiece : otherPieces) {
@@ -155,12 +170,11 @@ public class ChessBoard implements ChessBoardMove {
                 int xP = otherPiece[1];
                 int yP = otherPiece[0];
 
-                if ((y == end[0] && y == yP)
+                if ((y == end[0] && y == yP && xP != end[1])
                         && ((xP - end[1] > 0) != (xP - x > 0))) return false;
 
-                if ((x == end[1] && x == xP)
+                if ((x == end[1] && x == xP && yP != end[0])
                         && ((yP - end[0] > 0) != (yP - y > 0))) return false;
-
             }
         } else if (piece instanceof Bishop || piece instanceof Queen) {
             int dx = (x - end[1] > 0) ? -1 : 1;
@@ -179,29 +193,19 @@ public class ChessBoard implements ChessBoardMove {
         return piece.isValidMove(end);
 
 
-
-
     }
 
-
-    private boolean isArrayInArraylist(ArrayList<int[]> arr, int[] elem) {
-        for (int[] el : arr) {
-            if (Arrays.equals(el, elem)) return true;
-        }
-        return false;
-    }
 
     public boolean isMoveValid() {
         return isMoveValid(
-                new Queen(false, new int[]{3, 3},
-                        0), new int[]{3,4});
+                new Pawn(true, new int[]{1, 1},
+                        0), new int[]{2, 1});
     }
 
     @Override
     public void movePiece(Piece piece, int[] end) {
 
     }
-
 
 
 }

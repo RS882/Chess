@@ -14,13 +14,12 @@ public class Pawn extends Piece {
     }
 
 
-
     @Override
     public ArrayList<int[]> getAvailableMoves() {
         ArrayList<int[]> res = new ArrayList<>();
 
-        int x =this.getPosition()[0];
-        int y =this.getPosition()[1];
+        int x = this.getPosition()[0];
+        int y = this.getPosition()[1];
 
         if (this.getColor()) {
             if (x == 1) {
@@ -29,6 +28,10 @@ public class Pawn extends Piece {
             }
             int[] end = new int[]{x + 1, y};
             if (this.isInBoard(end)) res.add(end);
+            end = new int[]{x + 1, y + 1};
+            if (this.isInBoard(end)) res.add(end);
+            end = new int[]{x + 1, y - 1};
+            if (this.isInBoard(end)) res.add(end);
 
         } else {
             if (x == 6) {
@@ -36,6 +39,10 @@ public class Pawn extends Piece {
                 if (this.isInBoard(end)) res.add(end);
             }
             int[] end = new int[]{x - 1, y};
+            if (this.isInBoard(end)) res.add(end);
+            end = new int[]{x - 1, y + 1};
+            if (this.isInBoard(end)) res.add(end);
+            end = new int[]{x - 1, y - 1};
             if (this.isInBoard(end)) res.add(end);
         }
         return res;
