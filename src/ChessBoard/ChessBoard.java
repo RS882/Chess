@@ -16,6 +16,8 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
     private Piece lastMove;
 
+    private boolean colorOfMove;
+
 
     public ChessBoard() {
         this.board = new Piece[8][8];
@@ -220,7 +222,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
             this.board[piece.getPosition()[0]][piece.getPosition()[1]] = null;
             this.board[y][x] = piece;
             piece.setPosition(new int[]{y, x});
-
+            this.colorOfMove = !this.colorOfMove;
 
         }
     }
@@ -268,9 +270,8 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
     @Override
     public boolean isCheckmate(boolean color) {
-        return false;
+       return (color != this.colorOfMove) && isCheck(color);
     }
-
     @Override
     public boolean isStalemate() {
         return false;
