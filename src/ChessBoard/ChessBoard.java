@@ -129,11 +129,12 @@ public class ChessBoard implements ChessBoardMove {
                 }
             }
         }
-//        for (int[] elem : otherPieces) {
-//            if (end[0] == elem[0] && end[1] == elem[1]) {
-//                return false;
-//            }
-//        }
+        for (int[] elem : otherPieces) {
+            if (end[0] == elem[0] && end[1] == elem[1]){
+               if(piece.getColor() == this.board[end[0]][end[1]].getColor())  return false;
+            }
+
+        }
 
         int y = piece.getPosition()[0];
         int x = piece.getPosition()[1];
@@ -198,8 +199,8 @@ public class ChessBoard implements ChessBoardMove {
 
     public boolean isMoveValid() {
         return isMoveValid(
-                new Pawn(true, new int[]{1, 1},
-                        0), new int[]{2, 1});
+                new Queen(true, new int[]{3, 3},
+                        0), new int[]{3, 4});
     }
 
     @Override
