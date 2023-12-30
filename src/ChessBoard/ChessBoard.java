@@ -7,6 +7,7 @@ import Pieces.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import java.util.Scanner;
 import java.util.function.Predicate;
 
 public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoardIsAction {
@@ -17,10 +18,12 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
     private boolean colorOfMove;
 
+    private int addPieceCount;
 
     public ChessBoard() {
         this.board = new Piece[8][8];
         initialazePieces();
+        this.addPieceCount = 33;
 
     }
 
@@ -199,12 +202,11 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
                 xV += dx;
                 yV += dy;
             }
-
         }
         return piece.isValidMove(end);
     }
 
-//    public boolean isMoveValid() {
+    //    public boolean isMoveValid() {
 //        return isMoveValid(
 //                new Queen(false, new int[]{3, 3},
 //                        0), new int[]{2, 2});
@@ -238,6 +240,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         movePiece(piece, end, isSout, this.board);
 
     }
+
     @Override
     public void movePiece(Piece piece, int[] end) {
         movePiece(piece, end, true);
@@ -265,7 +268,42 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
     }
 
     @Override
-    public void promotingOfPawn() {
+    public boolean promotingOfPawn(Pawn proPawn) {
+        Scanner sc = new Scanner(System.in);
+        boolean color = proPawn.getColor();
+        int[] pos = proPawn.getPosition();
+        System.out.printf("The pawn <%s> can be promotion.%n",
+                coverNumToCnessCord(proPawn.getPosition()));
+        System.out.println("To select a piece enter a number:");
+        System.out.printf("%s - enter 1%n", PieceTypes.getChar(PieceTypes.QUEEN, color));
+        System.out.printf("%s - enter 2%n", PieceTypes.getChar(PieceTypes.ROOK, color));
+        System.out.printf("%s - enter 3%n", PieceTypes.getChar(PieceTypes.KNIGHT, color));
+        System.out.printf("%s - enter 4%n", PieceTypes.getChar(PieceTypes.BISHOP, color));
+        char num = sc.nextLine().charAt(0);
+        Piece newPiece;
+        switch (num) {
+            case '1':
+                newPiece = new Queen(color, pos, this.addPieceCount);
+              break;
+
+            case '2':
+                newPiece = new Rook(color, pos, this.addPieceCount);
+                break;
+            case '3':
+                newPiece = new Knight(color, pos, this.addPieceCount);
+                break;
+            case '4':
+                newPiece = new Bishop(color, pos, this.addPieceCount);
+                break;
+            default:
+                System.out.println("Piece is unselected!");
+                return false;
+        }
+        this.board[pos[0]][pos[1]] = newPiece;
+        this.addPieceCount++;
+        System.out.printf("Pawn was promotion to %s <%s>.%n",
+                newPiece.getType(), coverNumToCnessCord(newPiece.getPosition()));
+        return true;
 
     }
 
@@ -291,7 +329,8 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
     @Override
     public boolean isCheckmate(boolean color) {
-        Piece[][] newBoard = cloneBoard(this.board);
+        Piece[][] newBoard = cloneBoard();
+
         for (Piece elem : getPieces(color)) {
             for (int[] move : elem.getAvailableMoves()) {
                 movePiece(elem, move, false);
@@ -304,6 +343,10 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         }
         this.board = cloneBoard(newBoard);
         return true;
+    }
+
+    private Piece[][] cloneBoard() {
+        return cloneBoard(this.board);
     }
 
     private static Piece[][] cloneBoard(Piece[][] board) {

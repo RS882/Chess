@@ -1,13 +1,14 @@
 package ChessBoard;
 
 import Piece.Piece;
+import Pieces.Pawn;
 
 public interface ChessBoardAddAction {
 
 
     void capturing(Piece move, Piece take);
 
-    void promotingOfPawn();
+    boolean promotingOfPawn(Pawn proPawn);
 
     void  castling();
 }

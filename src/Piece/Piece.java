@@ -10,6 +10,7 @@ abstract public class Piece implements PieceAction, PieceSpecialAction,Cloneable
     final private boolean color;
     // black -true, white -false
 
+
     final private int idOfPieceThisType;
     private int[] position = null;
     // [y x]
