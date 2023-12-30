@@ -286,12 +286,8 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
     @Override
     public boolean isCheckmate(boolean color) {
-
         Piece[][] newBoard = cloneBoard(this.board);
-
-
         for (Piece elem : getPieces(color)) {
-
             for (int[] move : elem.getAvailableMoves()) {
                 movePiece(elem, move, false);
                 if (!isCheck(color)) {
@@ -316,7 +312,14 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
     }
 
     @Override
-    public boolean isStalemate() {
+    public boolean isStalemate(boolean color) {
+        ArrayList<Piece> pieces = getPieces(color);
+
+        for (Piece pi : pieces) {
+            for (int[] move : pi.getAvailableMoves()) {
+                if (pi != null && isMoveValid(pi, move) )return false;
+            }
+        }
         return false;
     }
 
