@@ -7,7 +7,6 @@ import Pieces.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import java.util.List;
 import java.util.function.Predicate;
 
 public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoardIsAction {
@@ -30,14 +29,14 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
             this.board[1][i] = new Pawn(true, new int[]{1, i}, i + 1);
             this.board[6][i] = new Pawn(false, new int[]{6, i}, i + 1);
         }
-        this.board[1][3] = new Rook(true, new int[]{1, 3}, 1);
+        this.board[0][3] = new Rook(true, new int[]{0, 3}, 1);
         this.board[0][5] = new Rook(true, new int[]{0, 5}, 2);
         this.board[3][4] = new Rook(false, new int[]{3, 4}, 1);
         this.board[4][2] = new Rook(false, new int[]{4, 2}, 2);
 
         this.board[5][2] = new Knight(true, new int[]{5, 2}, 1);
         this.board[7][3] = new Knight(true, new int[]{7, 3}, 2);
-        this.board[2][5] = new Knight(false, new int[]{2, 5}, 1);
+        this.board[3][5] = new Knight(false, new int[]{3, 5}, 1);
         this.board[0][0] = new Knight(false, new int[]{0, 0}, 2);
 
         this.board[0][2] = new Bishop(true, new int[]{0, 2}, 1);
@@ -134,6 +133,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         }
         for (int[] elem : otherPieces) {
             if (end[0] == elem[0] && end[1] == elem[1]) {
+
                 if (piece.getColor() == this.board[end[0]][end[1]].getColor()) return false;
             }
         }
@@ -186,9 +186,10 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         } else if (piece instanceof Bishop || piece instanceof Queen) {
             int dx = (x - end[1] > 0) ? -1 : 1;
             int dy = (y - end[0] > 0) ? -1 : 1;
-            int xV = x;
-            int yV = y;
+            int xV = x + dx;
+            int yV = y + dy;
             while (xV != end[1] && yV != end[0]) {
+
                 for (int[] otherPiece : otherPieces) {
                     if (xV == otherPiece[1] && yV == otherPiece[0]) return false;
                 }
@@ -202,29 +203,39 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
     public boolean isMoveValid() {
         return isMoveValid(
-                new Queen(true, new int[]{3, 3},
-                        0), new int[]{2, 3});
+                new Queen(false, new int[]{3, 3},
+                        0), new int[]{2, 2});
     }
 
     @Override
-    public void movePiece(Piece piece, int[] end) {
-        this.lastMove = piece;
+    public void movePiece(Piece piece, int[] end, boolean isSout) {
+        if (isSout) this.lastMove = piece;
 
         if (isMoveValid(piece, end)) {
             int x = end[1];
             int y = end[0];
-            System.out.printf("%s moves %s -> %s.%n",
+            if (isSout) System.out.printf("%s moves %s -> %s.%n",
                     piece.getType(),
-                    coverNubToCnessCord(piece.getPosition()),
-                    coverNubToCnessCord(end));
-            if (this.board[y][x] != null) capturing(piece, this.board[y][x]);
+                    coverNumToCnessCord(piece.getPosition()),
+                    coverNumToCnessCord(end));
+            if (this.board[y][x] != null && isSout) capturing(piece, this.board[y][x]);
 
             this.board[piece.getPosition()[0]][piece.getPosition()[1]] = null;
             this.board[y][x] = piece;
             piece.setPosition(new int[]{y, x});
             this.colorOfMove = !this.colorOfMove;
-
+            displayBoard();
+        } else {
+            if (isSout) System.out.printf(" %s moves %s -> %s not possible!%n",
+                    piece.getType(),
+                    coverNumToCnessCord(piece.getPosition()),
+                    coverNumToCnessCord(end));
         }
+
+    }
+
+    public void movePiece(Piece piece, int[] end) {
+        movePiece(piece, end, true);
     }
 
     public void movePiece() {
@@ -239,10 +250,10 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         System.out.printf("%s takes %s on %s.%n",
                 move.getType(),
                 take.getType(),
-                coverNubToCnessCord(take.getPosition()));
+                coverNumToCnessCord(take.getPosition()));
     }
 
-    public static String coverNubToCnessCord(int[] arr) {
+    public static String coverNumToCnessCord(int[] arr) {
         char[] xArr = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
         char[] yArr = {'8', '7', '6', '5', '4', '3', '2', '1'};
         return "" + xArr[arr[1]] + yArr[arr[0]];
@@ -262,16 +273,48 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
     public boolean isCheck(boolean color) {
         ArrayList<Piece> arr = getPieces(!color);
         Piece king = getPiece(PieceTypes.KING, color).get(0);
+
         for (Piece el : arr) {
-            if (el.isValidMove(king.getPosition())) return true;
+            if (isMoveValid(el, king.getPosition())) {
+                ((King) king).setCheck(true);
+                return true;
+            }
         }
+        ((King) king).setCheck(false);
         return false;
     }
 
     @Override
     public boolean isCheckmate(boolean color) {
-       return (color != this.colorOfMove) && isCheck(color);
+
+        Piece[][] newBoard = cloneBoard(this.board);
+
+
+        for (Piece elem : getPieces(color)) {
+
+            for (int[] move : elem.getAvailableMoves()) {
+                movePiece(elem, move, false);
+                if (!isCheck(color)) {
+                    this.board = cloneBoard(newBoard);
+                    return false;
+                }
+                this.board = cloneBoard(newBoard);
+            }
+        }
+        this.board = cloneBoard(newBoard);
+        return true;
     }
+
+    private static Piece[][] cloneBoard(Piece[][] board) {
+        Piece[][] newBoard = new Piece[8][8];
+        for (int i = 0; i < newBoard.length; i++) {
+            for (int j = 0; j < newBoard[i].length; j++) {
+                if (board[i][j] != null) newBoard[i][j] = board[i][j].clone();
+            }
+        }
+        return newBoard;
+    }
+
     @Override
     public boolean isStalemate() {
         return false;

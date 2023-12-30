@@ -9,12 +9,12 @@ import java.util.Arrays;
 public class King extends Piece {
 
     private boolean check;
-    private boolean checkmate;
+
 
     public King(boolean color, int[] position, int idOfPieceThisType) {
         super(PieceTypes.KING, color, position, idOfPieceThisType);
         this.check = false;
-        this.checkmate = false;
+
     }
 
     @Override
@@ -38,9 +38,7 @@ public class King extends Piece {
         this.check = check;
     }
 
-    public void setCheckmate(boolean checkmate) {
-        this.checkmate = checkmate;
-    }
+
 
     @Override
     public boolean isEnPassant() {
@@ -50,7 +48,7 @@ public class King extends Piece {
     @Override
     public boolean isCastling() {
 
-        return getCountOfMove() == 1 && !this.check && !this.checkmate;
+        return getCountOfMove() == 1 && !this.check ;
     }
 
     @Override

@@ -1,4 +1,5 @@
 import ChessBoard.ChessBoard;
+import Pieces.Bishop;
 import Pieces.Pawn;
 import Pieces.Queen;
 
@@ -10,17 +11,17 @@ public class Main {
 
         ChessBoard board =new ChessBoard();
 //        System.out.println(board);
-        board.displayBoard();
-//        System.out.println( board.isMoveValid());
-        board.movePiece();
-        board.displayBoard();
-        System.out.println(board.isCheck(false));
+     board.displayBoard();
+//       System.out.println( board.isMoveValid());
+//        board.movePiece();
+//        board.displayBoard();
+//        System.out.println(board.isCheck(false));
+            System.out.println( board.isCheckmate(true));
 
 
 //        System.out.println(board.coverNubToCnessCord(new int[]{3,3}));
 
 
-//        Pawn pawn = new Pawn(true, new int[]{2,3},0);
 //     //     System.out.println(Arrays.toString(pawn.getPosition()));
 //                ArrayList<int[]> pos =pawn.getAvailableMoves();
 //
@@ -35,7 +36,7 @@ public class Main {
 
 //        Knight knight = new Knight(false,new int[]{5,4},3);
 //
-//        Bishop bishop = new Bishop(true, new int[]{3,4},2);
+  //     Bishop bishop = new Bishop(true, new int[]{3,4},2);
 //
        //Queen queen = new Queen(true, new int[]{3,4},0);
 //
@@ -45,8 +46,8 @@ public class Main {
 //        System.out.println(PieceTypes.QUEEN.getChar(king.getType(),false));
 
        // Rook rook = new Rook(true, new int[]{1,4,});
-      //  System.out.println(Arrays.toString(rook.getPosition()));
-//                ArrayList<int[]> pos =king.getAvailableMoves();
+        //System.out.println(Arrays.toString(bishop.getPosition()));
+//                ArrayList<int[]> pos =bishop.getAvailableMoves();
 //
 //        for (int[] el: pos) {
 //            System.out.println(Arrays.toString(el));

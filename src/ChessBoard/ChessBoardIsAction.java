@@ -3,7 +3,7 @@ package ChessBoard;
 public interface ChessBoardIsAction {
 
     boolean isCheck(boolean color);
-    boolean isCheckmate(boolean color);
+    boolean isCheckmate(boolean color) throws CloneNotSupportedException;
 
     boolean isStalemate();
 

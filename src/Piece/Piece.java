@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.SimpleTimeZone;
 
-abstract public class Piece implements PieceAction, PieceSpecialAction {
+abstract public class Piece implements PieceAction, PieceSpecialAction,Cloneable {
     final private PieceTypes type;
     final private boolean color;
     // black -true, white -false
@@ -81,6 +81,16 @@ abstract public class Piece implements PieceAction, PieceSpecialAction {
     @Override
     public int hashCode() {
         return Objects.hash(type, color, idOfPieceThisType);
+    }
+
+    @Override
+    public Piece clone()  {
+        try{
+            return (Piece) super.clone();
+        }catch (CloneNotSupportedException e){
+            return  null;
+        }
+
     }
 }
 //        Создание классов фигур (Piece):
