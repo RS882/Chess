@@ -4,9 +4,9 @@ import Piece.Piece;
 
 public interface ChessBoardMove {
 
-    boolean isMoveValid(Piece piece, int[] end);
 
-    void movePiece(Piece piece, int[] end, boolean isSout);
+
+    void movePiece(Piece piece, int[] end);
 
 
 }

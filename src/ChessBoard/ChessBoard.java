@@ -36,7 +36,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
         this.board[5][2] = new Knight(true, new int[]{5, 2}, 1);
         this.board[7][3] = new Knight(true, new int[]{7, 3}, 2);
-        this.board[3][5] = new Knight(false, new int[]{3, 5}, 1);
+        this.board[2][5] = new Knight(false, new int[]{2, 5}, 1);
         this.board[0][0] = new Knight(false, new int[]{0, 0}, 2);
 
         this.board[0][2] = new Bishop(true, new int[]{0, 2}, 1);
@@ -116,25 +116,28 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         return String.valueOf(res);
     }
 
+    private boolean isMoveValid(Piece piece, int[] end) {
+        return isMoveValid(piece, end, this.board);
+    }
 
-    @Override
-    public boolean isMoveValid(Piece piece, int[] end) {
+
+    private boolean isMoveValid(Piece piece, int[] end, Piece[][] board) {
 
         if (!piece.isValidMove(end)) return false;
 
         ArrayList<int[]> otherPieces = new ArrayList<>();
 
-        for (int i = 0; i < this.board[0].length; i++) {
-            for (int j = 0; j < this.board.length; j++) {
-                if (this.board[i][j] != null) {
-                    otherPieces.add(this.board[i][j].getPosition());
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] != null) {
+                    otherPieces.add(board[i][j].getPosition());
                 }
             }
         }
         for (int[] elem : otherPieces) {
             if (end[0] == elem[0] && end[1] == elem[1]) {
 
-                if (piece.getColor() == this.board[end[0]][end[1]].getColor()) return false;
+                if (piece.getColor() == board[end[0]][end[1]].getColor()) return false;
             }
         }
 
@@ -146,21 +149,21 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         } else if (piece instanceof Pawn) {
 
             Predicate<int[]> isPawnRL = arr -> end[0] == y + arr[0] && end[1] == x + arr[1]
-                    && this.board[y + arr[0]][x + arr[1]] == null;
+                    && board[y + arr[0]][x + arr[1]] == null;
 
-            Predicate<Integer> isPawn1 = dy -> end[0] == y + dy && end[1] == x && this.board[y + dy][x] != null;
+            Predicate<Integer> isPawn1 = dy -> end[0] == y + dy && end[1] == x && board[y + dy][x] != null;
 
-            Predicate<Integer> isPawn2 = dy -> end[0] == y + dy * 2 && end[1] == x && (this.board[y + dy][x] != null
-                    || this.board[y + dy * 2][x] != null);
+            Predicate<Integer> isPawn2 = dy -> end[0] == y + dy * 2 && end[1] == x && (board[y + dy][x] != null
+                    || board[y + dy * 2][x] != null);
 
             Predicate<int[]> isPawnEnPas = arr ->
                     y == arr[1]
                             && ((isPawnRL.test(new int[]{arr[0], 1})
-                            && this.board[y][x + 1].isEnPassant()
-                            && lastMove.equals(this.board[y][x + 1]))
+                            && board[y][x + 1].isEnPassant()
+                            && lastMove.equals(board[y][x + 1]))
                             || (isPawnRL.test(new int[]{arr[0], -1})
-                            && this.board[y][x - 1].isEnPassant())
-                            && lastMove.equals(this.board[y][x - 1]));
+                            && board[y][x - 1].isEnPassant())
+                            && lastMove.equals(board[y][x - 1]));
 
             int step = (piece.getColor()) ? 1 : -1;
 
@@ -201,14 +204,12 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         return piece.isValidMove(end);
     }
 
-    public boolean isMoveValid() {
-        return isMoveValid(
-                new Queen(false, new int[]{3, 3},
-                        0), new int[]{2, 2});
-    }
-
-    @Override
-    public void movePiece(Piece piece, int[] end, boolean isSout) {
+//    public boolean isMoveValid() {
+//        return isMoveValid(
+//                new Queen(false, new int[]{3, 3},
+//                        0), new int[]{2, 2});
+//    }
+    private void movePiece(Piece piece, int[] end, boolean isSout, Piece[][] board) {
         if (isSout) this.lastMove = piece;
 
         if (isMoveValid(piece, end)) {
@@ -218,31 +219,35 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
                     piece.getType(),
                     coverNumToCnessCord(piece.getPosition()),
                     coverNumToCnessCord(end));
-            if (this.board[y][x] != null && isSout) capturing(piece, this.board[y][x]);
+            if (board[y][x] != null && isSout) capturing(piece, board[y][x]);
 
-            this.board[piece.getPosition()[0]][piece.getPosition()[1]] = null;
-            this.board[y][x] = piece;
+            board[piece.getPosition()[0]][piece.getPosition()[1]] = null;
+            board[y][x] = piece;
             piece.setPosition(new int[]{y, x});
             this.colorOfMove = !this.colorOfMove;
-            displayBoard();
+
         } else {
             if (isSout) System.out.printf(" %s moves %s -> %s not possible!%n",
                     piece.getType(),
                     coverNumToCnessCord(piece.getPosition()),
                     coverNumToCnessCord(end));
         }
-
     }
 
+    private void movePiece(Piece piece, int[] end, boolean isSout) {
+        movePiece(piece, end, isSout, this.board);
+
+    }
+    @Override
     public void movePiece(Piece piece, int[] end) {
         movePiece(piece, end, true);
     }
 
-    public void movePiece() {
-        movePiece(
-                new Rook(false, new int[]{3, 3}, 1),
-                new int[]{5, 3});
-    }
+//    public void movePiece() {
+//        movePiece(
+//                new Rook(false, new int[]{3, 3}, 1),
+//                new int[]{5, 3});
+//    }
 
 
     @Override
@@ -317,7 +322,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
         for (Piece pi : pieces) {
             for (int[] move : pi.getAvailableMoves()) {
-                if (pi != null && isMoveValid(pi, move) )return false;
+                if (pi != null && isMoveValid(pi, move)) return false;
             }
         }
         return false;
