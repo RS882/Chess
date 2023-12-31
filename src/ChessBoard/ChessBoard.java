@@ -43,7 +43,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         this.board[0][0] = new Knight(false, new int[]{0, 0}, 2);
 
         this.board[0][2] = new Bishop(true, new int[]{0, 2}, 1);
-        this.board[2][2] = new Bishop(true, new int[]{2, 2}, 2);
+          this.board[2][2] = new Bishop(true, new int[]{2, 2}, 2);
         this.board[6][6] = new Bishop(false, new int[]{6, 6}, 1);
         this.board[1][5] = new Bishop(false, new int[]{1, 5}, 2);
 
@@ -139,7 +139,6 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         }
         for (int[] elem : otherPieces) {
             if (end[0] == elem[0] && end[1] == elem[1]) {
-
                 if (piece.getColor() == board[end[0]][end[1]].getColor()) return false;
             }
         }
@@ -147,8 +146,11 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         int y = piece.getPosition()[0];
         int x = piece.getPosition()[1];
 
-        if (piece instanceof Knight || piece instanceof King) {
+        if (piece instanceof Knight) {
             return true;
+        } else if (piece instanceof King) {
+      //      System.out.println(isCheck(piece.getColor(), end));
+            return !isCheck(piece.getColor(), end);
         } else if (piece instanceof Pawn) {
 
             Predicate<int[]> isPawnRL = arr -> end[0] == y + arr[0] && end[1] == x + arr[1]
@@ -206,11 +208,12 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         return piece.isValidMove(end);
     }
 
-    //    public boolean isMoveValid() {
-//        return isMoveValid(
-//                new Queen(false, new int[]{3, 3},
-//                        0), new int[]{2, 2});
-//    }
+    public boolean isMoveValid() {
+        return isMoveValid(
+                new King(true, new int[]{2, 3},
+                        0), new int[]{3, 4});
+    }
+
     private void movePiece(Piece piece, int[] end, boolean isSout, Piece[][] board) {
         if (isSout) this.lastMove = piece;
 
@@ -284,7 +287,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         switch (num) {
             case '1':
                 newPiece = new Queen(color, pos, this.addPieceCount);
-              break;
+                break;
 
             case '2':
                 newPiece = new Rook(color, pos, this.addPieceCount);
@@ -314,17 +317,33 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
     @Override
     public boolean isCheck(boolean color) {
-        ArrayList<Piece> arr = getPieces(!color);
         Piece king = getPiece(PieceTypes.KING, color).get(0);
+        boolean res = isCheck(color, king.getPosition());
+        ((King) king).setCheck(res);
+        return res;
+//        ArrayList<Piece> arr = getPieces(!color);
+//        Piece king = getPiece(PieceTypes.KING, color).get(0);
+//
+//        for (Piece el : arr) {
+//            if (isMoveValid(el, king.getPosition())) {
+//                ((King) king).setCheck(true);
+//                return true;
+//            }
+//        }
+//        ((King) king).setCheck(false);
+//        return false;
+    }
 
+    private boolean isCheck(boolean color, int[] pos) {
+        ArrayList<Piece> arr = getPieces(!color);
+        boolean res = false;
         for (Piece el : arr) {
-            if (isMoveValid(el, king.getPosition())) {
-                ((King) king).setCheck(true);
-                return true;
+            if (isMoveValid(el, pos)) {
+                res = true;
+                break;
             }
         }
-        ((King) king).setCheck(false);
-        return false;
+        return res;
     }
 
     @Override
