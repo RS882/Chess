@@ -29,35 +29,36 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
     private void initialazePieces() {
 
-        this.board[5][2] = new King(true, new int[]{5, 2}, 0);
-        this.board[7][2] = new King(false, new int[]{7, 2}, 0);
-        this.board[5][4] = new Knight(true, new int[]{5, 4}, 2);
-        this.board[5][3] = new Bishop(true, new int[]{5, 3}, 1);
+//        this.board[5][2] = new King(true, new int[]{5, 2}, 0);
+//        this.board[7][2] = new King(false, new int[]{7, 2}, 0);
+//        this.board[5][4] = new Knight(true, new int[]{5, 4}, 2);
+//        this.board[5][3] = new Bishop(true, new int[]{5, 3}, 1);
 
 //        for (int i = 0; i < 8; i++) {
 //            this.board[1][i] = new Pawn(true, new int[]{1, i}, i + 1);
 //            this.board[6][i] = new Pawn(false, new int[]{6, i}, i + 1);
 //        }
-//        this.board[0][3] = new Rook(true, new int[]{0, 3}, 1);
-//        this.board[0][5] = new Rook(true, new int[]{0, 5}, 2);
-//        this.board[3][4] = new Rook(false, new int[]{3, 4}, 1);
-//        this.board[4][2] = new Rook(false, new int[]{4, 2}, 2);
-//
-//        this.board[5][2] = new Knight(true, new int[]{5, 2}, 1);
-//        this.board[7][3] = new Knight(true, new int[]{7, 3}, 2);
-//        this.board[2][5] = new Knight(false, new int[]{2, 5}, 1);
-//        this.board[0][0] = new Knight(false, new int[]{0, 0}, 2);
-//
-//        this.board[0][2] = new Bishop(true, new int[]{0, 2}, 1);
-//          this.board[2][2] = new Bishop(true, new int[]{2, 2}, 2);
-//        this.board[6][6] = new Bishop(false, new int[]{6, 6}, 1);
-//        this.board[1][5] = new Bishop(false, new int[]{1, 5}, 2);
-//
-//        this.board[5][3] = new Queen(true, new int[]{5, 3}, 0);
-//        this.board[2][6] = new Queen(false, new int[]{2, 6}, 0);
-//
-//        this.board[0][4] = new King(true, new int[]{0, 4}, 0);
-//        this.board[7][4] = new King(false, new int[]{7, 4}, 0);
+        this.board[7][1] = new Pawn(true, new int[]{7, 1}, 2 + 1);
+        this.board[0][3] = new Rook(true, new int[]{0, 3}, 1);
+        this.board[0][5] = new Rook(true, new int[]{0, 5}, 2);
+        this.board[3][4] = new Rook(false, new int[]{3, 4}, 1);
+        this.board[4][2] = new Rook(false, new int[]{4, 2}, 2);
+
+        this.board[5][2] = new Knight(true, new int[]{5, 2}, 1);
+        this.board[7][3] = new Knight(true, new int[]{7, 3}, 2);
+        this.board[2][5] = new Knight(false, new int[]{2, 5}, 1);
+        this.board[0][0] = new Knight(false, new int[]{0, 0}, 2);
+
+        this.board[0][2] = new Bishop(true, new int[]{0, 2}, 1);
+          this.board[2][2] = new Bishop(true, new int[]{2, 2}, 2);
+        this.board[6][6] = new Bishop(false, new int[]{6, 6}, 1);
+        this.board[1][5] = new Bishop(false, new int[]{1, 5}, 2);
+
+        this.board[5][3] = new Queen(true, new int[]{5, 3}, 0);
+        this.board[2][6] = new Queen(false, new int[]{2, 6}, 0);
+
+        this.board[0][4] = new King(true, new int[]{0, 4}, 0);
+        this.board[7][4] = new King(false, new int[]{7, 4}, 0);
 
 
 //        for (int i = 0; i < 8; i++) {
@@ -280,24 +281,29 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
     }
 
     @Override
-    public boolean promotingOfPawn(Pawn proPawn) {
+    public void promotingOfPawn(Pawn proPawn) {
         Scanner sc = new Scanner(System.in);
         boolean color = proPawn.getColor();
         int[] pos = proPawn.getPosition();
         System.out.printf("The pawn <%s> can be promotion.%n",
                 coverNumToCnessCord(proPawn.getPosition()));
-        System.out.println("To select a piece enter a number:");
-        System.out.printf("%s - enter 1%n", PieceTypes.getChar(PieceTypes.QUEEN, color));
-        System.out.printf("%s - enter 2%n", PieceTypes.getChar(PieceTypes.ROOK, color));
-        System.out.printf("%s - enter 3%n", PieceTypes.getChar(PieceTypes.KNIGHT, color));
-        System.out.printf("%s - enter 4%n", PieceTypes.getChar(PieceTypes.BISHOP, color));
-        char num = sc.nextLine().charAt(0);
+        char num;
+        try{
+            System.out.println("To select a piece enter a number:");
+            System.out.printf("%s - enter 1%n", PieceTypes.getChar(PieceTypes.QUEEN, color));
+            System.out.printf("%s - enter 2%n", PieceTypes.getChar(PieceTypes.ROOK, color));
+            System.out.printf("%s - enter 3%n", PieceTypes.getChar(PieceTypes.KNIGHT, color));
+            System.out.printf("%s - enter 4%n", PieceTypes.getChar(PieceTypes.BISHOP, color));
+
+           num = sc.nextLine().charAt(0);
+        }catch (Exception ex){
+            num = 1;
+        }
         Piece newPiece;
         switch (num) {
             case '1':
                 newPiece = new Queen(color, pos, this.addPieceCount);
                 break;
-
             case '2':
                 newPiece = new Rook(color, pos, this.addPieceCount);
                 break;
@@ -309,16 +315,14 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
                 break;
             default:
                 System.out.println("Piece is unselected!");
-                return false;
+                System.out.println("Atomically selected QUEEN");
+                newPiece = new Queen(color, pos, this.addPieceCount);
         }
         this.board[pos[0]][pos[1]] = newPiece;
         this.addPieceCount++;
         System.out.printf("Pawn was promotion to %s <%s>.%n",
                 newPiece.getType(), coverNumToCnessCord(newPiece.getPosition()));
-        return true;
-
     }
-
     @Override
     public void castling() {
 

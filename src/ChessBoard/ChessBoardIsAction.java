@@ -7,6 +7,8 @@ public interface ChessBoardIsAction {
 
     boolean isStalemate(boolean color);
 
+
+
 }
 //        Методы для проверки игровой ситуации:
 //        isCheck

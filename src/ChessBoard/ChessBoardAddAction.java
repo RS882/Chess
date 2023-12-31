@@ -8,7 +8,7 @@ public interface ChessBoardAddAction {
 
     void capturing(Piece move, Piece take);
 
-    boolean promotingOfPawn(Pawn proPawn);
+    void promotingOfPawn(Pawn proPawn);
 
     void  castling();
 }

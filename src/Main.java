@@ -1,4 +1,5 @@
 import ChessBoard.ChessBoard;
+import Piece.Piece;
 import Pieces.Bishop;
 import Pieces.Pawn;
 import Pieces.Queen;
@@ -12,7 +13,16 @@ public class Main {
         ChessBoard board =new ChessBoard();
 //        System.out.println(board);
      board.displayBoard();
-        System.out.println(board.isStalemate(false));
+
+
+
+        for (Piece[] str:board.getBoard()) {
+            for (Piece pi: str) {
+                if(pi!=null && pi.isPromotion()) board.promotingOfPawn((Pawn) pi);
+            }
+        }
+        board.displayBoard();
+//        System.out.println(board.isStalemate(false));
 //     System.out.println( board.isMoveValid());
 //        board.movePiece();
 //        board.displayBoard();
