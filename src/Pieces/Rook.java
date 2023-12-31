@@ -14,14 +14,14 @@ public class Rook extends Piece {
     @Override
     public ArrayList<int[]> getAvailableMoves() {
         ArrayList<int[]> res = new ArrayList<>();
-        int x =this.getPosition()[0];
-        int y =this.getPosition()[1];
+        int x = this.getPosition()[0];
+        int y = this.getPosition()[1];
 
         for (int i = 0; i < 8; i++) {
             int[] end = new int[]{i, y};
-            if(!Arrays.equals(end, this.getPosition())) res.add(end);
+            if (!Arrays.equals(end, this.getPosition()) && this.isInBoard(end)) res.add(end);
             end = new int[]{x, i};
-            if(!Arrays.equals(end, this.getPosition()))res.add(end);
+            if (!Arrays.equals(end, this.getPosition()) && this.isInBoard(end)) res.add(end);
         }
         return res;
     }
@@ -33,7 +33,7 @@ public class Rook extends Piece {
 
     @Override
     public boolean isCastling() {
-       return getCountOfMove()==1;
+        return getCountOfMove() == 1;
     }
 
     @Override

@@ -27,7 +27,10 @@ public class King extends Piece {
         for (int i = y - 1; i <= y + 1; i++) {
             for (int j = x - 1; j <= x + 1; j++) {
                 int[] end = new int[]{j, i};
-                if (!Arrays.equals(end, this.getPosition())) res.add(end);
+                if (!Arrays.equals(end, this.getPosition()) && this.isInBoard(end)) {
+                    //System.out.println(Arrays.toString(end));
+                    res.add(end);
+                }
             }
         }
 
@@ -39,7 +42,6 @@ public class King extends Piece {
     }
 
 
-
     @Override
     public boolean isEnPassant() {
         return false;
@@ -48,7 +50,7 @@ public class King extends Piece {
     @Override
     public boolean isCastling() {
 
-        return getCountOfMove() == 1 && !this.check ;
+        return getCountOfMove() == 1 && !this.check;
     }
 
     @Override

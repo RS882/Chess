@@ -12,7 +12,8 @@ public class Main {
         ChessBoard board =new ChessBoard();
 //        System.out.println(board);
      board.displayBoard();
-     System.out.println( board.isMoveValid());
+        System.out.println(board.isStalemate(false));
+//     System.out.println( board.isMoveValid());
 //        board.movePiece();
 //        board.displayBoard();
 //        System.out.println(board.isCheck(false));
