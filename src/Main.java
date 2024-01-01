@@ -3,6 +3,7 @@ import Piece.Piece;
 import Pieces.Bishop;
 import Pieces.Pawn;
 import Pieces.Queen;
+import Pieces.Rook;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,13 +16,14 @@ public class Main {
      board.displayBoard();
 
 
-
-        for (Piece[] str:board.getBoard()) {
-            for (Piece pi: str) {
-                if(pi!=null && pi.isPromotion()) board.promotingOfPawn((Pawn) pi);
-            }
-        }
+board.castling(false, new Rook(false,new int[]{7,7},3));
         board.displayBoard();
+//        for (Piece[] str:board.getBoard()) {
+//            for (Piece pi: str) {
+//                if(pi!=null && pi.isPromotion()) board.promotingOfPawn((Pawn) pi);
+//            }
+//        }
+//        board.displayBoard();
 //        System.out.println(board.isStalemate(false));
 //     System.out.println( board.isMoveValid());
 //        board.movePiece();

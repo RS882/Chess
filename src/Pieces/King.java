@@ -41,6 +41,9 @@ public class King extends Piece {
         this.check = check;
     }
 
+    public boolean getCheck() {
+        return this.check;
+    }
 
     @Override
     public boolean isEnPassant() {
@@ -49,7 +52,6 @@ public class King extends Piece {
 
     @Override
     public boolean isCastling() {
-
         return getCountOfMove() == 1 && !this.check;
     }
 

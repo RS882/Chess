@@ -2,6 +2,7 @@ package ChessBoard;
 
 import Piece.Piece;
 import Pieces.Pawn;
+import Pieces.Rook;
 
 public interface ChessBoardAddAction {
 
@@ -10,7 +11,7 @@ public interface ChessBoardAddAction {
 
     void promotingOfPawn(Pawn proPawn);
 
-    void  castling();
+    void  castling(boolean color, Rook rook);
 }
 //        Метод displayBoard:
 
