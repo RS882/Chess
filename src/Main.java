@@ -4,6 +4,7 @@ import Pieces.Bishop;
 import Pieces.Pawn;
 import Pieces.Queen;
 import Pieces.Rook;
+import PlayGUI.PlayChess;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,13 +12,13 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
 
-        ChessBoard board =new ChessBoard();
-//        System.out.println(board);
-     board.displayBoard();
+//        ChessBoard board =new ChessBoard();
+////        System.out.println(board);
+//     board.displayBoard();
 
-
-board.castling(false, new Rook(false,new int[]{7,7},3));
-        board.displayBoard();
+        PlayChess chess = new PlayChess();
+//board.castling(false, new Rook(false,new int[]{7,7},3));
+//        board.displayBoard();
 //        for (Piece[] str:board.getBoard()) {
 //            for (Piece pi: str) {
 //                if(pi!=null && pi.isPromotion()) board.promotingOfPawn((Pawn) pi);
