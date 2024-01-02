@@ -15,11 +15,12 @@ abstract public class Piece implements PieceAction, PieceSpecialAction,Cloneable
     private int[] position = null;
     // [y x]
     private int countOfMove;
+    private static int countOfPieces =1;
 
-    public Piece(PieceTypes type, boolean color, int[] position, int idOfPieceThisType) {
+    public Piece(PieceTypes type, boolean color, int[] position) {
         this.type = type;
         this.color = color;
-        this.idOfPieceThisType = idOfPieceThisType;
+        this.idOfPieceThisType = countOfPieces++;
         this.countOfMove = 0;
         setPosition(position);
     }

@@ -19,12 +19,12 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
     private boolean colorOfMove;
 
-    private int addPieceCount;
+
 
     public ChessBoard() {
         this.board = new Piece[8][8];
         initialazePieces();
-        this.addPieceCount = 33;
+
 
     }
     private void initialazePieces() {
@@ -37,60 +37,64 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 //        this.board[5][4] = new Knight(true, new int[]{5, 4}, 2);
 //        this.board[5][3] = new Bishop(true, new int[]{5, 3}, 1);
 //
-//        for (int i = 0; i < 8; i++) {
-//            this.board[1][i] = new Pawn(true, new int[]{1, i}, i + 1);
-//            this.board[6][i] = new Pawn(false, new int[]{6, i}, i + 1);
-//        }
-////        this.board[7][1] = new Pawn(true, new int[]{7, 1}, 2 + 1);
-//        this.board[0][3] = new Rook(true, new int[]{0, 3}, 1);
-//        this.board[0][5] = new Rook(true, new int[]{0, 5}, 2);
-////        this.board[3][4] = new Rook(false, new int[]{3, 4}, 1);
-////        this.board[4][2] = new Rook(false, new int[]{4, 2}, 2);
-//
-//        this.board[5][2] = new Knight(true, new int[]{5, 2}, 1);
-//   //      this.board[7][3] = new Knight(true, new int[]{7, 3}, 2);
-//        this.board[2][5] = new Knight(false, new int[]{2, 5}, 1);
-//        this.board[0][0] = new Knight(false, new int[]{0, 0}, 2);
-//
-//        this.board[0][2] = new Bishop(true, new int[]{0, 2}, 1);
-//        this.board[2][2] = new Bishop(true, new int[]{2, 2}, 2);
-//        this.board[6][6] = new Bishop(false, new int[]{6, 6}, 1);
-//        this.board[1][5] = new Bishop(false, new int[]{1, 5}, 2);
-//
-//        this.board[5][3] = new Queen(true, new int[]{5, 3}, 0);
-//        this.board[2][6] = new Queen(false, new int[]{2, 6}, 0);
-//
-//        this.board[0][4] = new King(true, new int[]{0, 4}, 0);
-//        this.board[7][4] = new King(false, new int[]{7, 4}, 0);
-//
-//        this.board[7][0] = new Rook(false, new int[]{7, 0}, 1);
-//        this.board[7][7] = new Rook(false, new int[]{7, 7}, 2);
-
         for (int i = 0; i < 8; i++) {
-            board[1][i] = new Pawn(true, new int[]{1, i}, i + 1);
-           board[6][i] = new Pawn(false, new int[]{6, i}, i + 1);
+            this.board[1][i] = new Pawn(true, new int[]{1, i});
+            this.board[6][i] = new Pawn(false, new int[]{6, i});
         }
-        board[0][0] = new Rook(true, new int[]{0, 0}, 1);
-        board[0][7] = new Rook(true, new int[]{0, 7}, 2);
-        board[7][0] = new Rook(false, new int[]{7, 0}, 1);
-        board[7][7] = new Rook(false, new int[]{7, 7}, 2);
+//        this.board[7][1] = new Pawn(true, new int[]{7, 1}, 2 + 1);
+        this.board[0][3] = new Rook(true, new int[]{0, 3});
+        this.board[0][5] = new Rook(true, new int[]{0, 5});
+//        this.board[3][4] = new Rook(false, new int[]{3, 4}, 1);
+//        this.board[4][2] = new Rook(false, new int[]{4, 2}, 2);
 
-        board[0][1] = new Knight(true, new int[]{0, 1}, 1);
-        board[0][6] = new Knight(true, new int[]{0, 6}, 2);
-        board[7][1] = new Knight(false, new int[]{7, 1}, 1);
-        board[7][6] = new Knight(false, new int[]{7, 6}, 2);
+        this.board[5][2] = new Knight(true, new int[]{5, 2});
+   //      this.board[7][3] = new Knight(true, new int[]{7, 3}, 2);
+        this.board[2][5] = new Knight(false, new int[]{2, 5});
+        this.board[0][0] = new Knight(false, new int[]{0, 0});
 
-        board[0][2] = new Bishop(true, new int[]{0, 2}, 1);
-        board[0][5] = new Bishop(true, new int[]{0, 5}, 2);
-        board[7][2] = new Bishop(false, new int[]{7, 2}, 1);
-        board[7][5] = new Bishop(false, new int[]{7, 5}, 2);
+        this.board[0][2] = new Bishop(true, new int[]{0, 2});
+        this.board[2][2] = new Bishop(true, new int[]{2, 2});
+        this.board[6][6] = new Bishop(false, new int[]{6, 6});
+        this.board[1][5] = new Bishop(false, new int[]{1, 5});
 
-        board[0][3] = new Queen(true, new int[]{0, 2}, 0);
-        board[7][3] = new Queen(false, new int[]{7, 3}, 0);
+        this.board[5][3] = new Queen(true, new int[]{5, 3});
+        this.board[2][6] = new Queen(false, new int[]{2, 6});
 
-        board[0][4] = new King(true, new int[]{0, 4}, 0);
-        board[7][4] = new King(false, new int[]{7, 4}, 0);
+        this.board[0][4] = new King(true, new int[]{0, 4});
+        this.board[7][4] = new King(false, new int[]{7, 4});
 
+        this.board[7][0] = new Rook(false, new int[]{7, 0});
+        this.board[7][7] = new Rook(false, new int[]{7, 7});
+
+//        for (int i = 0; i < 8; i++) {
+//            board[1][i] = new Pawn(true, new int[]{1, i});
+//           board[6][i] = new Pawn(false, new int[]{6, i});
+//        }
+//        board[0][0] = new Rook(true, new int[]{0, 0});
+//        board[0][7] = new Rook(true, new int[]{0, 7});
+//        board[7][0] = new Rook(false, new int[]{7, 0});
+//        board[7][7] = new Rook(false, new int[]{7, 7});
+//
+//        board[0][1] = new Knight(true, new int[]{0, 1});
+//        board[0][6] = new Knight(true, new int[]{0, 6});
+//        board[7][1] = new Knight(false, new int[]{7, 1});
+//        board[7][6] = new Knight(false, new int[]{7, 6});
+//
+//        board[0][2] = new Bishop(true, new int[]{0, 2});
+//        board[0][5] = new Bishop(true, new int[]{0, 5});
+//        board[7][2] = new Bishop(false, new int[]{7, 2});
+//        board[7][5] = new Bishop(false, new int[]{7, 5});
+//
+//        board[0][3] = new Queen(true, new int[]{0, 2});
+//        board[7][3] = new Queen(false, new int[]{7, 3});
+//
+//        board[0][4] = new King(true, new int[]{0, 4});
+//        board[7][4] = new King(false, new int[]{7, 4});
+
+    }
+
+    public boolean getColorOfMove() {
+        return this.colorOfMove;
     }
 
     public void displayBoard() {
@@ -258,7 +262,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
                 coverNumToCnessCord(take.getPosition()));
     }
 
-    public static String coverNumToCnessCord(int[] arr) {
+    public  String coverNumToCnessCord(int[] arr) {
         char[] xArr = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
         char[] yArr = {'8', '7', '6', '5', '4', '3', '2', '1'};
         return "" + xArr[arr[1]] + yArr[arr[0]];
@@ -286,24 +290,24 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         Piece newPiece;
         switch (num) {
             case '1':
-                newPiece = new Queen(color, pos, this.addPieceCount);
+                newPiece = new Queen(color, pos);
                 break;
             case '2':
-                newPiece = new Rook(color, pos, this.addPieceCount);
+                newPiece = new Rook(color, pos);
                 break;
             case '3':
-                newPiece = new Knight(color, pos, this.addPieceCount);
+                newPiece = new Knight(color, pos);
                 break;
             case '4':
-                newPiece = new Bishop(color, pos, this.addPieceCount);
+                newPiece = new Bishop(color, pos);
                 break;
             default:
                 System.out.println("Piece is unselected!");
                 System.out.println("Atomically selected QUEEN");
-                newPiece = new Queen(color, pos, this.addPieceCount);
+                newPiece = new Queen(color, pos);
         }
         this.board[pos[0]][pos[1]] = newPiece;
-        this.addPieceCount++;
+
         System.out.printf("Pawn was promotion to %s <%s>.%n",
                 newPiece.getType(), coverNumToCnessCord(newPiece.getPosition()));
     }
@@ -426,7 +430,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         return arr;
     }
 
-    private ArrayList<Piece> getPieces(boolean color) {
+    public ArrayList<Piece> getPieces(boolean color) {
         ArrayList<Piece> arrC = getPieces();
         ArrayList<Piece> res = new ArrayList<>();
         for (Piece elem : arrC) {

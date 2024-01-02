@@ -9,8 +9,8 @@ import java.util.ArrayList;
 public class Pawn extends Piece {
 
 
-    public Pawn(boolean color, int[] position, int idOfPieceThisType) {
-        super(PieceTypes.PAWN, color, position, idOfPieceThisType);
+    public Pawn(boolean color, int[] position) {
+        super(PieceTypes.PAWN, color, position);
     }
 
 

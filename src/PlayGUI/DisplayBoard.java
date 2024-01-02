@@ -1,6 +1,6 @@
 package PlayGUI;
 
-import ChessBoard.ChessBoard;
+
 import Piece.*;
 
 import javax.swing.*;
@@ -9,10 +9,12 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class PlayChess extends JFrame {
-    public PlayChess() {
+public class DisplayBoard extends JFrame {
+    Piece[][] board;
+    public DisplayBoard(Piece[][] board) {
         super("Chess");
 //        setSize(400, 400);
+//        this.board=board;
         setBounds(100, 100, 500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -23,22 +25,23 @@ public class PlayChess extends JFrame {
         Color light = new Color(255, 206, 158);
         Color dark = new Color(209, 139, 71);
 
-        ChessBoard board = new ChessBoard();
+
 
         Function<Integer, JLabel> getSymbol = (size) -> {
             JLabel piece = new JLabel();
             piece.setFont(new Font("Serif", Font.PLAIN, size));
             return piece;
         };
-
-        Supplier<JLabel> getChar = () -> getSymbol.apply(25);
-        Supplier<JLabel> getPiece = () -> getSymbol.apply(30);
-
         Supplier<JPanel> getCell = () -> {
             JPanel cell = new JPanel();
             cell.setPreferredSize(new Dimension(50, 50));
             return cell;
         };
+
+        Supplier<JLabel> getChar = () -> getSymbol.apply(25);
+        Supplier<JLabel> getPiece = () -> getSymbol.apply(30);
+
+
         Function<JLabel, JPanel> getCellWithPi = (pi) -> {
             JPanel cell = getCell.get();
             cell.add(pi);
@@ -66,8 +69,8 @@ public class PlayChess extends JFrame {
             for (int j = 0; j < 8; j++) {
                 JPanel cell = getCell.get();
                 cell.setBackground((i + j) % 2 == 0 ? light : dark);
-                if (board.getBoard()[i][j] != null) {
-                    Piece pieceObj = board.getBoard()[i][j];
+                if (board[i][j] != null) {
+                    Piece pieceObj = board[i][j];
                     JLabel piece = getPiece.get();
                     piece.setText(PieceTypes.getChar(pieceObj.getType(), pieceObj.getColor()));
                     cell.add(piece);
@@ -80,6 +83,8 @@ public class PlayChess extends JFrame {
 
         revalidate();
         repaint();
+
+
 
     }
 }

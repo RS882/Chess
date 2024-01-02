@@ -1,13 +1,4 @@
-import ChessBoard.ChessBoard;
-import Piece.Piece;
-import Pieces.Bishop;
-import Pieces.Pawn;
-import Pieces.Queen;
-import Pieces.Rook;
-import PlayGUI.PlayChess;
-
-import java.util.ArrayList;
-import java.util.Arrays;
+import PlayGUI.Start;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,7 +7,8 @@ public class Main {
 ////        System.out.println(board);
 //     board.displayBoard();
 
-        PlayChess chess = new PlayChess();
+//        PlayChess chess = new PlayChess();
+        Start start =new Start();
 //board.castling(false, new Rook(false,new int[]{7,7},3));
 //        board.displayBoard();
 //        for (Piece[] str:board.getBoard()) {

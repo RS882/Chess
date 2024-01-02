@@ -5,8 +5,8 @@ import Piece.PieceTypes;
 import java.util.ArrayList;
 
 public class Knight extends Piece {
-    public Knight( boolean color, int[] position,int idOfPieceThisType) {
-        super(PieceTypes.KNIGHT, color, position, idOfPieceThisType);
+    public Knight( boolean color, int[] position) {
+        super(PieceTypes.KNIGHT, color, position);
     }
 
     @Override

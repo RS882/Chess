@@ -11,8 +11,8 @@ public class King extends Piece {
     private boolean check;
 
 
-    public King(boolean color, int[] position, int idOfPieceThisType) {
-        super(PieceTypes.KING, color, position, idOfPieceThisType);
+    public King(boolean color, int[] position) {
+        super(PieceTypes.KING, color, position);
         this.check = false;
 
     }

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Rook extends Piece {
-    public Rook(boolean color, int[] position, int idOfPieceThisType) {
-        super(PieceTypes.ROOK, color, position, idOfPieceThisType);
+    public Rook(boolean color, int[] position) {
+        super(PieceTypes.ROOK, color, position);
     }
 
     @Override

@@ -6,8 +6,8 @@ import Piece.PieceTypes;
 import java.util.ArrayList;
 
 public class Bishop extends Piece {
-    public Bishop(boolean color, int[] position, int idOfPieceThisType) {
-        super(PieceTypes.BISHOP, color, position, idOfPieceThisType);
+    public Bishop(boolean color, int[] position) {
+        super(PieceTypes.BISHOP, color, position);
     }
 
     @Override
