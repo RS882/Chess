@@ -7,7 +7,7 @@ import Pieces.Rook;
 public interface ChessBoardAddAction {
 
 
-    void capturing(Piece move, Piece take);
+    String capturing(Piece move, Piece take);
 
     void promotingOfPawn(Pawn proPawn);
 

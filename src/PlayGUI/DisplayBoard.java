@@ -16,7 +16,7 @@ public class DisplayBoard extends JFrame {
 //        setSize(400, 400);
 //        this.board=board;
         setBounds(100, 100, 500, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
 
         Container container = super.getContentPane();

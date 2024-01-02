@@ -212,17 +212,17 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 //                        0), new int[]{3, 4});
 //    }
 
-    private void movePiece(Piece piece, int[] end, boolean isSout, Piece[][] board) {
+    private String movePiece(Piece piece, int[] end, boolean isSout, Piece[][] board) {
         if (isSout) this.lastMove = piece;
-
+        String res= "";
         if (isMoveValid(piece, end)) {
             int x = end[1];
             int y = end[0];
-            if (isSout) System.out.printf("%s moves %s -> %s.%n",
+            if (isSout) res = String.format("%s moves <%s> => <%s>.%n",
                     piece.getType(),
                     coverNumToCnessCord(piece.getPosition()),
                     coverNumToCnessCord(end));
-            if (board[y][x] != null && isSout) capturing(piece, board[y][x]);
+            if (board[y][x] != null && isSout) res+=capturing(piece, board[y][x]);
 
             board[piece.getPosition()[0]][piece.getPosition()[1]] = null;
             board[y][x] = piece;
@@ -230,21 +230,23 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
             this.colorOfMove = !this.colorOfMove;
 
         } else {
-            if (isSout) System.out.printf(" %s moves %s -> %s not possible!%n",
+
+            if (isSout) res = String.format(" %s moves <%s> => <%s> not possible!%n",
                     piece.getType(),
                     coverNumToCnessCord(piece.getPosition()),
                     coverNumToCnessCord(end));
         }
+        return res;
     }
 
-    private void movePiece(Piece piece, int[] end, boolean isSout) {
-        movePiece(piece, end, isSout, this.board);
+    private String movePiece(Piece piece, int[] end, boolean isSout) {
+        return   movePiece(piece, end, isSout, this.board);
 
     }
 
     @Override
-    public void movePiece(Piece piece, int[] end) {
-        movePiece(piece, end, true);
+    public String movePiece(Piece piece, int[] end) {
+        return  movePiece(piece, end, true);
     }
 
 //    public void movePiece() {
@@ -255,8 +257,8 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
 
     @Override
-    public void capturing(Piece move, Piece take) {
-        System.out.printf("%s takes %s on %s.%n",
+    public String capturing(Piece move, Piece take) {
+       return  String.format("%s takes %s on <%s>.%n",
                 move.getType(),
                 take.getType(),
                 coverNumToCnessCord(take.getPosition()));
@@ -446,6 +448,14 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
             if (elem.getType() == type) res.add(elem);
         }
         return res;
+    }
+
+    public Piece getPieceById(int id) {
+        ArrayList<Piece> arrC = getPieces();
+        for (Piece elem : arrC) {
+            if (elem.getIdOfPieceThisType() == id) return elem;
+        }
+        return null;
     }
     @Override
     public String toString() {

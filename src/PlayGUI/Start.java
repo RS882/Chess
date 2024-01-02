@@ -1,20 +1,23 @@
 package PlayGUI;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
+
 
 import ChessBoard.ChessBoard;
 import Piece.*;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Start extends JFrame {
     private ButtonGroup group;
     private JTextField move;
+
+    private DisplayBoard chess;
+
+    private ChessBoard board;
 
     public Start() {
         super("Chess");
@@ -27,24 +30,32 @@ public class Start extends JFrame {
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
 
-        ChessBoard board = new ChessBoard();
-        DisplayBoard chess = new DisplayBoard(board.getBoard());
+        this.board = new ChessBoard();
+        this.chess = new DisplayBoard(this.board.getBoard());
         //JOptionPane.showMessageDialog(null, "Chess game started!");
-        container.add(Box.createRigidArea(new Dimension(0, 20)));
+        container.add(getGap());
 
-        container.add(getTitle(board));
-        container.add(Box.createRigidArea(new Dimension(0, 20)));
+        container.add(getTitle(this.board));
+        container.add(getGap());
 
-        container.add(getRButtonGroup(board));
-        container.add(Box.createRigidArea(new Dimension(0, 20)));
+        container.add(getRButtonGroup(this.board));
+        container.add(getGap());
 
         container.add(getInputField());
-        container.add(Box.createRigidArea(new Dimension(0, 20)));
+        container.add(getGap());
 
         revalidate();
         repaint();
         pack();
 //        setLocationRelativeTo(null);
+    }
+
+    private Component getGap(int h) {
+        return Box.createRigidArea(new Dimension(0, h));
+    }
+
+    private Component getGap() {
+        return getGap(20);
     }
 
     private JLabel getTitle(ChessBoard board) {
@@ -95,6 +106,7 @@ public class Start extends JFrame {
         inputGroup.add(title);
         inputGroup.add(this.move);
         inputGroup.add(new JLabel("  "));
+
         inputGroup.add(getBtn());
 
         inputGroup.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
@@ -108,18 +120,21 @@ public class Start extends JFrame {
 
         btn.addActionListener(e -> {
             try {
-                String rbDate = group.getSelection().getActionCommand();
-                String moveCord = move.getText();
+                String rbDate = this.group.getSelection().getActionCommand();
+                String moveCord = this.move.getText();
 
-                convertChessCordToNub(moveCord);
+              String isMove =  this.board.movePiece(this.board.getPieceById(Integer.valueOf(rbDate)),
+                        convertChessCordToNub(moveCord));
+              JOptionPane.showMessageDialog(null, isMove);
+                this.chess.dispose();
+                this.chess = new DisplayBoard(this.board.getBoard());
+//                JOptionPane.showMessageDialog(null, message);
 
-//                System.out.println(moveCord);
             } catch (NullPointerException ex) {
                 JOptionPane.showMessageDialog(null, "Choose a piece!");
             } catch (IncorrectValueOfPieceMove ex) {
                 JOptionPane.showMessageDialog(null, "Enter correct move! (exam : d2)");
             }
-
 
         });
         return btn;
@@ -134,16 +149,15 @@ public class Start extends JFrame {
                 chArr[1] >= '1' && chArr[1] <= '8') {
             res[0] = 8 - (chArr[1] - '0');
             res[1] = chArr[0] - 'a';
-            System.out.println(Arrays.toString(res));
+
         } else throw new IncorrectValueOfPieceMove();
-        System.out.println(Arrays.toString(res));
-        return new int[]{};
+
+        return res;
 
     }
 
 }
-class IncorrectValueOfPieceMove extends Exception{
-    public IncorrectValueOfPieceMove() {
 
-    }
+class IncorrectValueOfPieceMove extends Exception {
+
 }

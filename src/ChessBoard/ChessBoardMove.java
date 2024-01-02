@@ -6,7 +6,7 @@ public interface ChessBoardMove {
 
 
 
-    void movePiece(Piece piece, int[] end);
+    String movePiece(Piece piece, int[] end);
 
 
 }
