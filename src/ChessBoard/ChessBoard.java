@@ -17,7 +17,9 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
     private Piece lastMove;
 
-    private boolean colorOfMove ;
+    private boolean colorOfMove;
+
+    private Pawn pawnEnPas;
 
 
     public ChessBoard() {
@@ -38,34 +40,63 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 //        this.board[5][4] = new Knight(true, new int[]{5, 4});
 //        this.board[4][2] = new Bishop(true, new int[]{4, 2});
 //
-        for (int i = 0; i < 8; i++) {
-            this.board[1][i] = new Pawn(true, new int[]{1, i});
-            this.board[6][i] = new Pawn(false, new int[]{6, i});
-        }
+//        for (int i = 0; i < 8; i++) {
+//            this.board[1][i] = new Pawn(true, new int[]{1, i});
+//            this.board[6][i] = new Pawn(false, new int[]{6, i});
+//        }
+//
+//        this.board[0][3] = new Rook(true, new int[]{0, 3});
+//        this.board[0][7] = new Rook(true, new int[]{0, 7});
+//
+//
+//        this.board[5][2] = new Knight(true, new int[]{5, 2});
+//        //      this.board[7][3] = new Knight(true, new int[]{7, 3}, 2);
+//        this.board[2][5] = new Knight(false, new int[]{2, 5});
+//        this.board[0][0] = new Knight(false, new int[]{0, 0});
+//
+//        this.board[0][2] = new Bishop(true, new int[]{0, 2});
+//        this.board[2][2] = new Bishop(true, new int[]{2, 2});
+//        this.board[6][6] = new Bishop(false, new int[]{6, 6});
+//        this.board[1][5] = new Bishop(false, new int[]{1, 5});
+//
+//        this.board[5][3] = new Queen(true, new int[]{5, 3});
+//        this.board[2][6] = new Queen(false, new int[]{2, 6});
+//
+//        this.board[0][4] = new King(true, new int[]{0, 4});
+//        this.board[7][4] = new King(false, new int[]{7, 4});
+//
+//        this.board[7][0] = new Rook(false, new int[]{7, 0});
+//        this.board[7][7] = new Rook(false, new int[]{7, 7});
 
-        this.board[0][3] = new Rook(true, new int[]{0, 3});
-        this.board[0][7] = new Rook(true, new int[]{0, 7});
+//        for (int i = 0; i < 8; i++) {
+//            board[1][i] = new Pawn(true, new int[]{1, i});
+//            board[6][i] = new Pawn(false, new int[]{6, i});
+//        }
+        board[3][3] = new Pawn(true, new int[]{3, 3});
 
+        board[3][4] = new Pawn(false, new int[]{3, 4});
 
-        this.board[5][2] = new Knight(true, new int[]{5, 2});
-        //      this.board[7][3] = new Knight(true, new int[]{7, 3}, 2);
-        this.board[2][5] = new Knight(false, new int[]{2, 5});
-        this.board[0][0] = new Knight(false, new int[]{0, 0});
+        board[0][0] = new Rook(true, new int[]{0, 0});
+        board[0][7] = new Rook(true, new int[]{0, 7});
+        board[7][0] = new Rook(false, new int[]{7, 0});
+        board[7][7] = new Rook(false, new int[]{7, 7});
 
-        this.board[0][2] = new Bishop(true, new int[]{0, 2});
-        this.board[2][2] = new Bishop(true, new int[]{2, 2});
-        this.board[6][6] = new Bishop(false, new int[]{6, 6});
-        this.board[1][5] = new Bishop(false, new int[]{1, 5});
+        board[0][1] = new Knight(true, new int[]{0, 1});
+        board[0][6] = new Knight(true, new int[]{0, 6});
+        board[7][1] = new Knight(false, new int[]{7, 1});
+        board[7][6] = new Knight(false, new int[]{7, 6});
 
-        this.board[5][3] = new Queen(true, new int[]{5, 3});
-        this.board[2][6] = new Queen(false, new int[]{2, 6});
+        board[0][2] = new Bishop(true, new int[]{0, 2});
+        board[0][5] = new Bishop(true, new int[]{0, 5});
+        board[7][2] = new Bishop(false, new int[]{7, 2});
+        board[7][5] = new Bishop(false, new int[]{7, 5});
 
-        this.board[0][4] = new King(true, new int[]{0, 4});
-        this.board[7][4] = new King(false, new int[]{7, 4});
+        board[0][3] = new Queen(true, new int[]{0, 2});
+        board[7][3] = new Queen(false, new int[]{7, 3});
 
-        this.board[7][0] = new Rook(false, new int[]{7, 0});
-        this.board[7][7] = new Rook(false, new int[]{7, 7});
-
+        board[0][4] = new King(true, new int[]{0, 4});
+        board[7][4] = new King(false, new int[]{7, 4});
+//----------------------------------------------------
 //        for (int i = 0; i < 8; i++) {
 //            board[1][i] = new Pawn(true, new int[]{1, i});
 //           board[6][i] = new Pawn(false, new int[]{6, i});
@@ -117,6 +148,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
     private boolean isMoveValid(Piece piece, int[] end) {
 
+
         if (!piece.isValidMove(end)) return false;
 
         ArrayList<int[]> otherPieces = new ArrayList<>();
@@ -155,22 +187,42 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
             Predicate<Integer> isPawn2 = dy -> end[0] == y + dy * 2 && end[1] == x && (this.board[y + dy][x] != null
                     || this.board[y + dy * 2][x] != null);
 
-            Predicate<int[]> isPawnEnPas = arr ->
-                    y == arr[1]
-                            && ((isPawnRL.test(new int[]{arr[0], 1})
-                            && this.board[y][x + 1].isEnPassant()
-                            && lastMove.equals(this.board[y][x + 1]))
-                            || (isPawnRL.test(new int[]{arr[0], -1})
+//            Predicate<Integer> isPawnEnPas = num ->
+//
+//                    ((isPawnRL.test(new int[]{num, 1})
+//                            && (this.board[y][x + 1] != null
+//                            && this.board[y][x + 1].isEnPassant())
+//                            && lastMove.equals(this.board[y][x + 1]))
+//
+//                            || (isPawnRL.test(new int[]{num, -1})
+//                            && (this.board[y][x - 1] != null
+//                            && this.board[y][x - 1].isEnPassant())
+//                            && lastMove.equals(this.board[y][x - 1])));
+
+            Predicate<Integer> isPawnEnPas = num ->
+
+                    (((this.board[y][x + 1] != null
+                            && this.board[y][x + 1].isEnPassant())
+                            && this.lastMove.equals(this.board[y][x + 1]))
+
+                            || ((this.board[y][x - 1] != null
                             && this.board[y][x - 1].isEnPassant())
-                            && lastMove.equals(this.board[y][x - 1]));
+                            && this.lastMove.equals(this.board[y][x - 1])))
+
+                            && Arrays.equals(this.lastMove.getPosition(), new int[]{end[0] - num, end[1]});
 
             int step = (piece.getColor()) ? 1 : -1;
 
-            if (isPawnEnPas.test(new int[]{step, 4})) {
-                isEnPas = true;
-                // return true;//!!!
-            } else if (isPawn1.test(step) || isPawn2.test(step) ||
-                    isPawnRL.test(new int[]{step, 1}) || isPawnRL.test(new int[]{step, -1})) return false;
+            if (isPawn1.test(step) || isPawn2.test(step)) return false;
+            else if (isPawnRL.test(new int[]{step, 1}) || isPawnRL.test(new int[]{step, -1})) {
+
+                if (!isPawnEnPas.test(step)) return false;
+                else {
+                    this.pawnEnPas = (this.board[y][x - 1] != null) ? (Pawn) this.board[y][x - 1] : (Pawn) this.board[y][x + 1];
+                    System.out.println(this.pawnEnPas);
+                }
+            }
+
 
         } else if (piece instanceof Rook ||
                 (piece instanceof Queen && (y == end[0] || x == end[1]))) {
@@ -216,6 +268,13 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         return true;
     }
 
+    public Pawn getPawnEnPas() {
+        return this.pawnEnPas;
+    }
+
+    public void setPawnEnPas(Pawn pawnEnPas) {
+        this.pawnEnPas = pawnEnPas;
+    }
 
 //    public boolean isMoveValid() {
 //        return isMoveValid(
@@ -224,7 +283,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 //    }
 
     private String movePiece(Piece piece, int[] end, boolean isSout, Piece[][] board) {
-        if (isSout) this.lastMove = piece;
+
         String res = "";
         if (isMoveValid(piece, end)) {
             res = movePieceOneTest(piece, end, isSout, board);
@@ -232,9 +291,9 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         } else {
 
             if (isSout) {
-                res = String.format(" %s moves <%s> => <%s> not possible!%n",
+                res = String.format(" %s moves to <%s> not possible!%n",
                         piece.getType(),
-                        coverNumToCnessCord(piece.getPosition()),
+//                        coverNumToCnessCord(piece.getPosition()),
                         coverNumToCnessCord(end));
                 Piece king = getPiece(PieceTypes.KING, piece.getColor()).get(0);
                 if (((King) king).getCheck()) res += String.format("Is check!");
@@ -257,7 +316,20 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         board[piece.getPosition()[0]][piece.getPosition()[1]] = null;
         board[y][x] = piece;
         piece.setPosition(new int[]{y, x});
-        if (isSout) this.colorOfMove = !this.colorOfMove;
+        if (this.pawnEnPas != null) {
+            int xP = this.pawnEnPas.getPosition()[1];
+            int yP = this.pawnEnPas.getPosition()[0];
+            res += String.format("En passant! PAWN <%s> took.",
+                    coverNumToCnessCord(this.pawnEnPas.getPosition()));
+            board[yP][xP] = null;
+            this.pawnEnPas = null;
+
+        }
+
+        if (isSout) {
+            this.lastMove = piece;
+            this.colorOfMove = !this.colorOfMove;
+        }
         return res;
     }
 

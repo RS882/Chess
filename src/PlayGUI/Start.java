@@ -17,10 +17,10 @@ public class Start extends JFrame {
 
     private DisplayBoard chess;
 
-    private  ChessBoard board;
+    private ChessBoard board;
     private Container container;
 
-    private  JPanel pieceChoise;
+    private JPanel pieceChoise;
 
     public Start() {
         super("Chess");
@@ -30,22 +30,22 @@ public class Start extends JFrame {
         setVisible(true);
 
         this.container = super.getContentPane();
-        this.container.setLayout(new BoxLayout( this.container, BoxLayout.Y_AXIS));
+        this.container.setLayout(new BoxLayout(this.container, BoxLayout.Y_AXIS));
 
 
         this.board = new ChessBoard();
         this.chess = new DisplayBoard(this.board.getBoard());
         //JOptionPane.showMessageDialog(null, "Chess game started!");
         this.pieceChoise = new JPanel();
-       this.pieceChoise.setLayout(new BoxLayout( this.pieceChoise, BoxLayout.Y_AXIS));
+        this.pieceChoise.setLayout(new BoxLayout(this.pieceChoise, BoxLayout.Y_AXIS));
 
 
-            this.pieceChoise.add(getGap());
+        this.pieceChoise.add(getGap());
 
-            this.pieceChoise.add(getMoveTitle());
-            this.pieceChoise.add(getGap());
+        this.pieceChoise.add(getMoveTitle());
+        this.pieceChoise.add(getGap());
 
-            this.pieceChoise.add(getRButtonGroup());
+        this.pieceChoise.add(getRButtonGroup());
 
         this.container.add(this.pieceChoise);
 
@@ -68,11 +68,11 @@ public class Start extends JFrame {
     }
 
     private JLabel getMoveTitle() {
-      return getMoveTitle("");
+        return getMoveTitle("");
     }
 
     private JLabel getMoveTitle(String addMess) {
-        String movTitle = String.format("%sMove of the <%s> pieces. Choose piece:",addMess,
+        String movTitle = String.format("%sMove of the <%s> pieces. Choose piece:", addMess,
                 (this.board.getColorOfMove()) ? "black" : "white");
 
         JLabel mov = new JLabel(movTitle);
@@ -134,33 +134,33 @@ public class Start extends JFrame {
         btn.addActionListener(e -> {
             try {
                 String rbDate = this.group.getSelection().getActionCommand();
-                String moveCord = this.move.getText();
 
+                String moveCord = this.move.getText();
                 String moveMessage = this.board.movePiece(this.board.getPieceById(Integer.valueOf(rbDate)),
                         convertChessCordToNub(moveCord));
+
                 JOptionPane.showMessageDialog(null, moveMessage);
 
                 boolean color = this.board.getColorOfMove();
-                String checkNow ="";
+                String checkNow = "";
+
 
                 if (this.board.isStalemate(color)) {
 
-                    checkNow= String.format("Game over.%n Is stalemate.%n");
+                    checkNow = String.format("Game over.%n Is stalemate.%n");
                     JOptionPane.showMessageDialog(null, checkNow);
                     btn.setEnabled(false);
                     this.move.setEnabled(false);
-                }else
-                if (this.board.isCheckmate(color)) {
+                } else if (this.board.isCheckmate(color)) {
 
                     checkNow = String.format("Game over.%n Is Checkmate.%n <%s> win",
                             !color ? "Black" : "White");
                     JOptionPane.showMessageDialog(null, checkNow);
                     btn.setEnabled(false);
                     this.move.setEnabled(false);
-                }else
-                if (this.board.isCheck(color)){
+                } else if (this.board.isCheck(color)) {
 
-                    checkNow = String.format("Check to <%s>! ",  color ? "black" : "white");
+                    checkNow = String.format("Check to <%s>! ", color ? "black" : "white");
                     JOptionPane.showMessageDialog(null, checkNow);
                 }
 
@@ -169,8 +169,8 @@ public class Start extends JFrame {
 
                 this.pieceChoise.removeAll();
 
-                if(!checkNow.equals("")){
-                   this.pieceChoise.add(getGap());
+                if (!checkNow.equals("")) {
+                    this.pieceChoise.add(getGap());
                     JLabel check = new JLabel(checkNow);
                     check.setFont(new Font("Arial", Font.PLAIN, 20));
                     check.setForeground(Color.RED);
