@@ -17,7 +17,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
     private Piece lastMove;
 
-    private boolean colorOfMove = true;
+    private boolean colorOfMove ;
 
 
     public ChessBoard() {
@@ -138,7 +138,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         int x = piece.getPosition()[1];
         boolean isEnPas = false;
         if (piece instanceof Knight) {
-            return true;
+//            return true;
         } else if (piece instanceof King) {
 
             Piece king2 = getPiece(PieceTypes.KING, !piece.getColor()).get(0);

@@ -25,7 +25,7 @@ public class Start extends JFrame {
     public Start() {
         super("Chess");
         //        setSize(400, 400);
-        setBounds(600, 100, 600, 400);
+        setBounds(600, 100, 600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
@@ -68,7 +68,11 @@ public class Start extends JFrame {
     }
 
     private JLabel getMoveTitle() {
-        String movTitle = String.format("Move of the <%s> pieces. Choose piece:",
+      return getMoveTitle("");
+    }
+
+    private JLabel getMoveTitle(String addMess) {
+        String movTitle = String.format("%sMove of the <%s> pieces. Choose piece:",addMess,
                 (this.board.getColorOfMove()) ? "black" : "white");
 
         JLabel mov = new JLabel(movTitle);
@@ -137,6 +141,7 @@ public class Start extends JFrame {
                 JOptionPane.showMessageDialog(null, moveMessage);
 
                 boolean color = this.board.getColorOfMove();
+                String checkNow ="";
 
                 if (this.board.isStalemate(color)) {
                     String mess = String.format("Game over.%n Is stalemate.%n");
@@ -151,12 +156,26 @@ public class Start extends JFrame {
                     btn.setEnabled(false);
                     this.move.setEnabled(false);
                 }
+                if (this.board.isCheck(color)){
+
+                    checkNow = String.format("Check to <%s>! ",  color ? "black" : "white");
+                    JOptionPane.showMessageDialog(null, checkNow);
+                }
 
                 this.chess.dispose();
                 this.chess = new DisplayBoard(this.board.getBoard());
 
                 this.pieceChoise.removeAll();
 
+                if(!checkNow.equals("")){
+                   this.pieceChoise.add(getGap());
+                    JLabel check = new JLabel(checkNow);
+                    check.setFont(new Font("Arial", Font.PLAIN, 20));
+                    check.setForeground(Color.RED);
+                    check.setAlignmentX(Component.RIGHT_ALIGNMENT);
+                    this.pieceChoise.add(check);
+
+                }
                 this.pieceChoise.add(getGap());
                 this.pieceChoise.add(getMoveTitle());
                 this.pieceChoise.add(getGap());
@@ -165,6 +184,7 @@ public class Start extends JFrame {
 
                 revalidate();
                 repaint();
+                pack();
 
             } catch (NullPointerException ex) {
                 JOptionPane.showMessageDialog(null, "Choose a piece!");
