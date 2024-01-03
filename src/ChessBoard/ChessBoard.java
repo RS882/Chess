@@ -123,7 +123,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
         for (Piece[] pieces : this.board) {
             for (int j = 0; j < pieces.length; j++) {
-                if (pieces[j] != null) {
+                if (pieces[j] != null && !pieces[j].equals(piece)) {
                     otherPieces.add(pieces[j].getPosition());
                 }
             }
@@ -232,8 +232,9 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         } else {
 
             if (isSout) {
-                res = String.format(" %s moves to <%s> not possible!%n",
+                res = String.format(" %s moves <%s> => <%s> not possible!%n",
                         piece.getType(),
+                        coverNumToCnessCord(piece.getPosition()),
                         coverNumToCnessCord(end));
                 Piece king = getPiece(PieceTypes.KING, piece.getColor()).get(0);
                 if (((King) king).getCheck()) res += String.format("Is check!");

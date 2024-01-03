@@ -144,18 +144,20 @@ public class Start extends JFrame {
                 String checkNow ="";
 
                 if (this.board.isStalemate(color)) {
-                    String mess = String.format("Game over.%n Is stalemate.%n");
-                    JOptionPane.showMessageDialog(null, mess);
+
+                    checkNow= String.format("Game over.%n Is stalemate.%n");
+                    JOptionPane.showMessageDialog(null, checkNow);
                     btn.setEnabled(false);
                     this.move.setEnabled(false);
-                }
+                }else
                 if (this.board.isCheckmate(color)) {
-                    String mess = String.format("Game over.%n Is Checkmate.%n <%s> win",
+
+                    checkNow = String.format("Game over.%n Is Checkmate.%n <%s> win",
                             !color ? "Black" : "White");
-                    JOptionPane.showMessageDialog(null, mess);
+                    JOptionPane.showMessageDialog(null, checkNow);
                     btn.setEnabled(false);
                     this.move.setEnabled(false);
-                }
+                }else
                 if (this.board.isCheck(color)){
 
                     checkNow = String.format("Check to <%s>! ",  color ? "black" : "white");
