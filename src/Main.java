@@ -9,6 +9,7 @@ public class Main {
 
 //        PlayChess chess = new PlayChess();
         Start start =new Start();
+
 //board.castling(false, new Rook(false,new int[]{7,7},3));
 //        board.displayBoard();
 //        for (Piece[] str:board.getBoard()) {

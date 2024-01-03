@@ -17,7 +17,10 @@ public class Start extends JFrame {
 
     private DisplayBoard chess;
 
-    private ChessBoard board;
+    private  ChessBoard board;
+    private Container container;
+
+    private  JPanel pieceChoise;
 
     public Start() {
         super("Chess");
@@ -26,23 +29,29 @@ public class Start extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
-        Container container = super.getContentPane();
-        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        this.container = super.getContentPane();
+        this.container.setLayout(new BoxLayout( this.container, BoxLayout.Y_AXIS));
 
 
         this.board = new ChessBoard();
         this.chess = new DisplayBoard(this.board.getBoard());
         //JOptionPane.showMessageDialog(null, "Chess game started!");
-        container.add(getGap());
+        this.pieceChoise = new JPanel();
+       this.pieceChoise.setLayout(new BoxLayout( this.pieceChoise, BoxLayout.Y_AXIS));
 
-        container.add(getTitle(this.board));
-        container.add(getGap());
 
-        container.add(getRButtonGroup(this.board));
-        container.add(getGap());
+            this.pieceChoise.add(getGap());
 
-        container.add(getInputField());
-        container.add(getGap());
+            this.pieceChoise.add(getMoveTitle());
+            this.pieceChoise.add(getGap());
+
+            this.pieceChoise.add(getRButtonGroup());
+
+        this.container.add(this.pieceChoise);
+
+        this.container.add(getGap());
+        this.container.add(getInputField());
+        this.container.add(getGap());
 
         revalidate();
         repaint();
@@ -58,9 +67,9 @@ public class Start extends JFrame {
         return getGap(20);
     }
 
-    private JLabel getTitle(ChessBoard board) {
+    private JLabel getMoveTitle() {
         String movTitle = String.format("Move of the <%s> pieces. Choose piece:",
-                (board.getColorOfMove()) ? "black" : "white");
+                (this.board.getColorOfMove()) ? "black" : "white");
 
         JLabel mov = new JLabel(movTitle);
         mov.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -68,17 +77,17 @@ public class Start extends JFrame {
         return mov;
     }
 
-    private JPanel getRButtonGroup(ChessBoard board) {
+    private JPanel getRButtonGroup() {
         JPanel bGroup = new JPanel();
         bGroup.setLayout(new GridLayout(4, 4));
         bGroup.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         this.group = new ButtonGroup();
-        ArrayList<Piece> pieces = board.getPieces(board.getColorOfMove());
+        ArrayList<Piece> pieces = this.board.getPieces(this.board.getColorOfMove());
         for (Piece pi : pieces) {
             String rbText = String.format("%s<%s>",
                     PieceTypes.getChar(pi.getType(), pi.getColor()),
-                    board.coverNumToCnessCord(pi.getPosition()));
+                    this.board.coverNumToCnessCord(pi.getPosition()));
             JRadioButton rb = new JRadioButton(rbText);
             rb.setActionCommand("" + pi.getIdOfPieceThisType());
             rb.setFont(new Font("Serif", Font.PLAIN, 15));
@@ -123,12 +132,39 @@ public class Start extends JFrame {
                 String rbDate = this.group.getSelection().getActionCommand();
                 String moveCord = this.move.getText();
 
-              String isMove =  this.board.movePiece(this.board.getPieceById(Integer.valueOf(rbDate)),
+                String moveMessage = this.board.movePiece(this.board.getPieceById(Integer.valueOf(rbDate)),
                         convertChessCordToNub(moveCord));
-              JOptionPane.showMessageDialog(null, isMove);
+                JOptionPane.showMessageDialog(null, moveMessage);
+
+                boolean color = this.board.getColorOfMove();
+
+                if (this.board.isStalemate(color)) {
+                    String mess = String.format("Game over.%n Is stalemate.%n");
+                    JOptionPane.showMessageDialog(null, mess);
+                    btn.setEnabled(false);
+                    this.move.setEnabled(false);
+                }
+                if (this.board.isCheckmate(color)) {
+                    String mess = String.format("Game over.%n Is Checkmate.%n <%s> win",
+                            !color ? "Black" : "White");
+                    JOptionPane.showMessageDialog(null, mess);
+                    btn.setEnabled(false);
+                    this.move.setEnabled(false);
+                }
+
                 this.chess.dispose();
                 this.chess = new DisplayBoard(this.board.getBoard());
-//                JOptionPane.showMessageDialog(null, message);
+
+                this.pieceChoise.removeAll();
+
+                this.pieceChoise.add(getGap());
+                this.pieceChoise.add(getMoveTitle());
+                this.pieceChoise.add(getGap());
+                this.pieceChoise.add(getRButtonGroup());
+                this.move.setText("");
+
+                revalidate();
+                repaint();
 
             } catch (NullPointerException ex) {
                 JOptionPane.showMessageDialog(null, "Choose a piece!");

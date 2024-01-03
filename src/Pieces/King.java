@@ -13,7 +13,7 @@ public class King extends Piece {
 
     public King(boolean color, int[] position) {
         super(PieceTypes.KING, color, position);
-        this.check = false;
+        this.check = true;
 
     }
 
