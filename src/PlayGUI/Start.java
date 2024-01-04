@@ -6,6 +6,7 @@ import javax.swing.*;
 import ChessBoard.ChessBoard;
 import Piece.*;
 import Pieces.Pawn;
+import Pieces.Rook;
 
 import java.awt.*;
 
@@ -39,10 +40,11 @@ public class Start extends JFrame {
 
         this.pieceChoise = new JPanel();
         this.pieceChoise.setLayout(new BoxLayout(this.pieceChoise, BoxLayout.Y_AXIS));
+
         this.pieceChoise.add(getMoveTitle());
         this.pieceChoise.add(getRButtonGroup());
-
         this.container.add(this.pieceChoise);
+        this.container.add(getCastlingBtn());
         this.container.add(getInputField());
 
         revalidate();
@@ -52,13 +54,15 @@ public class Start extends JFrame {
     }
 
 
-    private JPanel makePanel(int top) {
+    public static JPanel makePanel(int top) {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1, 1));
         panel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.setBorder(BorderFactory.createEmptyBorder(top, 20, 20, 20));
         return panel;
     }
+
+
 
     private JPanel getMoveTitle() {
         return getMoveTitle("");
@@ -145,8 +149,9 @@ public class Start extends JFrame {
                 JOptionPane.showMessageDialog(null, moveMessage);
 
                 if (movingPiece.isPromotion()) {
-                   showPromotion(movingPiece);
-                };
+                    showPromotion(movingPiece);
+                }
+
                 boolean color = this.board.getColorOfMove();
 
                 String actionNow = "";
@@ -167,21 +172,7 @@ public class Start extends JFrame {
                     JOptionPane.showMessageDialog(null, actionNow);
                 }
 
-                this.chess.dispose();
-                this.chess = new DisplayBoard(this.board.getBoard());
-
-                this.pieceChoise.removeAll();
-
-                if (!actionNow.equals("")) this.pieceChoise.add(getActionTitle(actionNow));
-
-                this.pieceChoise.add(getMoveTitle());
-                this.pieceChoise.add(getRButtonGroup());
-                this.move.setText("");
-
-
-                revalidate();
-                repaint();
-                pack();
+                refreshPieceChoise(actionNow);
 
             } catch (NullPointerException ex) {
                 JOptionPane.showMessageDialog(null, "Choose a piece!");
@@ -194,6 +185,107 @@ public class Start extends JFrame {
 
     }
 
+    private void refreshPieceChoise(String actionNow){
+        this.chess.dispose();
+        this.chess = new DisplayBoard(this.board.getBoard());
+
+        this.pieceChoise.removeAll();
+
+        if (!actionNow.equals("")) this.pieceChoise.add(getActionTitle(actionNow));
+
+        this.pieceChoise.add(getMoveTitle());
+        this.pieceChoise.add(getRButtonGroup());
+        this.move.setText("");
+
+
+        revalidate();
+        repaint();
+        pack();
+    }
+    private JPanel getCastlingBtn() {
+        JPanel panel = makePanel(0);
+        JButton btn = new JButton("Casting");
+        btn.addActionListener(e -> {
+
+            ArrayList<Piece> rooks = this.board.getPiece(PieceTypes.ROOK, this.board.getColorOfMove());
+            if (rooks.size() == 0) btn.setEnabled(false);
+
+            JDialog container =new JDialog( this,"Castling", true);
+            container.setLayout(new GridLayout(3, 1));
+            container.setBounds(600, 100, 600, 500);
+            container.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            container.add(getTitleCast());
+            container.add(getRBGroupCast(rooks));
+            container.add(getBtnCast());
+
+            container.pack();
+            container.setVisible(true);
+        });
+
+        panel.add(btn);
+        return panel;
+    }
+    private JPanel getTitleCast() {
+        JPanel panel = Start.makePanel(20);
+
+        JLabel title = new JLabel(String.format("Choose a ROOK to castling"));
+        title.setFont(new Font("Arial", Font.PLAIN, 20));
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        panel.add(title);
+        return panel;
+    }
+
+    private JPanel getRBGroupCast(ArrayList<Piece> rooks) {
+        JPanel panel = Start.makePanel(0);
+
+        this.group = new ButtonGroup();
+
+        for (Piece rook : rooks) {
+            String rbText = String.format("%s<%s>",
+                    PieceTypes.getChar(PieceTypes.ROOK, this.board.getColorOfMove()),
+                    ChessBoard.coverNumToCnessCord(rook.getPosition()));
+            JRadioButton rb = new JRadioButton(rbText);
+            rb.setActionCommand(rook.getIdOfPieceThisType() + "");
+            rb.setFont(new Font("Serif", Font.PLAIN, 15));
+            this.group.add(rb);
+            panel.add(rb);
+        }
+        return panel;
+    }
+    private JPanel getBtnCast() {
+
+        JPanel panel = Start.makePanel(0);
+        JButton btn = new JButton(" Confirm  ");
+        btn.setMaximumSize(new Dimension(100, 30));
+        btn.setPreferredSize(new Dimension(100, 30));
+        btn.addActionListener(e -> {
+
+            try{
+                String type = this.group.getSelection().getActionCommand();
+
+                Piece rook = this.board.getPieceById(Integer.parseInt(type));
+
+                String mess =this.board.castling(this.board.getColorOfMove(),(Rook) rook);
+
+                JOptionPane.showMessageDialog(null, mess);
+
+                refreshPieceChoise("");
+
+
+
+                JButton butt = (JButton) e.getSource();
+                SwingUtilities.getWindowAncestor(butt).dispose();
+
+            } catch (NullPointerException ex) {
+                JOptionPane.showMessageDialog(null, "Choose a piece!");}
+
+        });
+        panel.add(btn);
+        return panel;
+
+    }
     private void showPromotion(Piece pawn) {
         if (!(pawn instanceof Pawn)) return;
         PawnPromotion promo = new PawnPromotion((Pawn) pawn, this.board, this.chess, this);

@@ -11,7 +11,7 @@ public interface ChessBoardAddAction {
 
     void promotingOfPawn(Pawn proPawn, String type);
 
-    void  castling(boolean color, Rook rook);
+    String  castling(boolean color, Rook rook);
 }
 //        Метод displayBoard:
 
