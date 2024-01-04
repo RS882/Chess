@@ -1,6 +1,6 @@
 package ChessBoard;
 
-import Piece.Piece;
+import Piece.*;
 import Pieces.Pawn;
 import Pieces.Rook;
 
@@ -9,7 +9,7 @@ public interface ChessBoardAddAction {
 
     String capturing(Piece move, Piece take);
 
-    void promotingOfPawn(Pawn proPawn);
+    void promotingOfPawn(Pawn proPawn, String type);
 
     void  castling(boolean color, Rook rook);
 }

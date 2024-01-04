@@ -87,9 +87,11 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         board[7][6] = new Knight(false, new int[]{7, 6});
 
         board[0][2] = new Bishop(true, new int[]{0, 2});
-        board[0][5] = new Bishop(true, new int[]{0, 5});
+       // board[0][5] = new Bishop(true, new int[]{0, 5});
         board[7][2] = new Bishop(false, new int[]{7, 2});
         board[7][5] = new Bishop(false, new int[]{7, 5});
+
+        board[1][5] = new Pawn(false, new int[]{1, 5});
 
         board[0][3] = new Queen(true, new int[]{0, 2});
         board[7][3] = new Queen(false, new int[]{7, 3});
@@ -268,13 +270,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         return true;
     }
 
-    public Pawn getPawnEnPas() {
-        return this.pawnEnPas;
-    }
 
-    public void setPawnEnPas(Pawn pawnEnPas) {
-        this.pawnEnPas = pawnEnPas;
-    }
 
 //    public boolean isMoveValid() {
 //        return isMoveValid(
@@ -293,7 +289,6 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
             if (isSout) {
                 res = String.format(" %s moves to <%s> not possible!%n",
                         piece.getType(),
-//                        coverNumToCnessCord(piece.getPosition()),
                         coverNumToCnessCord(end));
                 Piece king = getPiece(PieceTypes.KING, piece.getColor()).get(0);
                 if (((King) king).getCheck()) res += String.format("Is check!");
@@ -358,55 +353,65 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
                 coverNumToCnessCord(take.getPosition()));
     }
 
-    public String coverNumToCnessCord(int[] arr) {
+    public static String coverNumToCnessCord(int[] arr) {
         char[] xArr = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
         char[] yArr = {'8', '7', '6', '5', '4', '3', '2', '1'};
         return "" + xArr[arr[1]] + yArr[arr[0]];
     }
 
     @Override
-    public void promotingOfPawn(Pawn proPawn) {
-        Scanner sc = new Scanner(System.in);
-        boolean color = proPawn.getColor();
+    public void promotingOfPawn(Pawn proPawn,String type) {
+
         int[] pos = proPawn.getPosition();
-        System.out.printf("The pawn <%s> can be promotion.%n",
-                coverNumToCnessCord(proPawn.getPosition()));
-        char num;
-        try {
-            System.out.println("To select a piece enter a number:");
-            System.out.printf("%s - enter 1%n", PieceTypes.getChar(PieceTypes.QUEEN, color));
-            System.out.printf("%s - enter 2%n", PieceTypes.getChar(PieceTypes.ROOK, color));
-            System.out.printf("%s - enter 3%n", PieceTypes.getChar(PieceTypes.KNIGHT, color));
-            System.out.printf("%s - enter 4%n", PieceTypes.getChar(PieceTypes.BISHOP, color));
 
-            num = sc.nextLine().charAt(0);
-        } catch (Exception ex) {
-            num = 1;
-        }
-        Piece newPiece;
-        switch (num) {
-            case '1':
-                newPiece = new Queen(color, pos);
-                break;
-            case '2':
-                newPiece = new Rook(color, pos);
-                break;
-            case '3':
-                newPiece = new Knight(color, pos);
-                break;
-            case '4':
-                newPiece = new Bishop(color, pos);
-                break;
-            default:
-                System.out.println("Piece is unselected!");
-                System.out.println("Atomically selected QUEEN");
-                newPiece = new Queen(color, pos);
-        }
-        this.board[pos[0]][pos[1]] = newPiece;
-
-        System.out.printf("Pawn was promotion to %s <%s>.%n",
-                newPiece.getType(), coverNumToCnessCord(newPiece.getPosition()));
+//        this.board[pos[0]][pos[1]] = newPiece;
+//
+//        System.out.printf("PAWN was promotion to %s <%s>.%n",
+//                newPiece.getType(), coverNumToCnessCord(newPiece.getPosition()));
     }
+//    @Override
+//    public void promotingOfPawn(Pawn proPawn) {
+//        Scanner sc = new Scanner(System.in);
+//        boolean color = proPawn.getColor();
+//        int[] pos = proPawn.getPosition();
+//        System.out.printf("The pawn <%s> can be promotion.%n",
+//                coverNumToCnessCord(proPawn.getPosition()));
+//        char num;
+//        try {
+//            System.out.println("To select a piece enter a number:");
+//            System.out.printf("%s - enter 1%n", PieceTypes.getChar(PieceTypes.QUEEN, color));
+//            System.out.printf("%s - enter 2%n", PieceTypes.getChar(PieceTypes.ROOK, color));
+//            System.out.printf("%s - enter 3%n", PieceTypes.getChar(PieceTypes.KNIGHT, color));
+//            System.out.printf("%s - enter 4%n", PieceTypes.getChar(PieceTypes.BISHOP, color));
+//
+//            num = sc.nextLine().charAt(0);
+//        } catch (Exception ex) {
+//            num = 1;
+//        }
+//        Piece newPiece;
+//        switch (num) {
+//            case '1':
+//                newPiece = new Queen(color, pos);
+//                break;
+//            case '2':
+//                newPiece = new Rook(color, pos);
+//                break;
+//            case '3':
+//                newPiece = new Knight(color, pos);
+//                break;
+//            case '4':
+//                newPiece = new Bishop(color, pos);
+//                break;
+//            default:
+//                System.out.println("Piece is unselected!");
+//                System.out.println("Atomically selected QUEEN");
+//                newPiece = new Queen(color, pos);
+//        }
+//        this.board[pos[0]][pos[1]] = newPiece;
+//
+//        System.out.printf("PAWN was promotion to %s <%s>.%n",
+//                newPiece.getType(), coverNumToCnessCord(newPiece.getPosition()));
+//    }
 
     @Override
     public void castling(boolean color, Rook rook) {

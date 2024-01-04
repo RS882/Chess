@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import ChessBoard.ChessBoard;
 import Piece.*;
+import Pieces.Pawn;
 
 import java.awt.*;
 
@@ -34,6 +35,7 @@ public class Start extends JFrame {
 
 
         this.board = new ChessBoard();
+
         this.chess = new DisplayBoard(this.board.getBoard());
         //JOptionPane.showMessageDialog(null, "Chess game started!");
         this.pieceChoise = new JPanel();
@@ -135,31 +137,34 @@ public class Start extends JFrame {
             try {
                 String rbDate = this.group.getSelection().getActionCommand();
 
+                Piece movingPiece = this.board.getPieceById(Integer.parseInt(rbDate));
+
                 String moveCord = this.move.getText();
-                String moveMessage = this.board.movePiece(this.board.getPieceById(Integer.valueOf(rbDate)),
+                String moveMessage = this.board.movePiece(movingPiece,
                         convertChessCordToNub(moveCord));
 
                 JOptionPane.showMessageDialog(null, moveMessage);
+
+              if(movingPiece.isPromotion()){
+                    showPromotion(movingPiece);
+                }
 
                 boolean color = this.board.getColorOfMove();
                 String checkNow = "";
 
 
                 if (this.board.isStalemate(color)) {
-
                     checkNow = String.format("Game over.%n Is stalemate.%n");
                     JOptionPane.showMessageDialog(null, checkNow);
                     btn.setEnabled(false);
                     this.move.setEnabled(false);
                 } else if (this.board.isCheckmate(color)) {
-
                     checkNow = String.format("Game over.%n Is Checkmate.%n <%s> win",
                             !color ? "Black" : "White");
                     JOptionPane.showMessageDialog(null, checkNow);
                     btn.setEnabled(false);
                     this.move.setEnabled(false);
                 } else if (this.board.isCheck(color)) {
-
                     checkNow = String.format("Check to <%s>! ", color ? "black" : "white");
                     JOptionPane.showMessageDialog(null, checkNow);
                 }
@@ -196,6 +201,12 @@ public class Start extends JFrame {
 
         });
         return btn;
+
+    }
+
+    private void showPromotion(Piece pawn){
+        if(!(pawn instanceof Pawn)) return;
+        PawnPromotion promo = new PawnPromotion((Pawn) pawn,this.board);
 
     }
 
