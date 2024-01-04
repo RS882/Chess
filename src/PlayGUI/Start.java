@@ -145,7 +145,7 @@ public class Start extends JFrame {
 
                 JOptionPane.showMessageDialog(null, moveMessage);
 
-              if(movingPiece.isPromotion()){
+                if (movingPiece.isPromotion()) {
                     showPromotion(movingPiece);
                 }
 
@@ -204,9 +204,9 @@ public class Start extends JFrame {
 
     }
 
-    private void showPromotion(Piece pawn){
-        if(!(pawn instanceof Pawn)) return;
-        PawnPromotion promo = new PawnPromotion((Pawn) pawn,this.board);
+    private void showPromotion(Piece pawn) {
+        if (!(pawn instanceof Pawn)) return;
+        PawnPromotion promo = new PawnPromotion((Pawn) pawn, this.board, this.chess);
 
     }
 

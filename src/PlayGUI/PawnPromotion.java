@@ -10,15 +10,20 @@ import java.awt.*;
 public class PawnPromotion extends JFrame {
 
     private Pawn pawn;
+    private String pawnPos;
 
     private ButtonGroup group;
 
     private ChessBoard board;
 
-    public PawnPromotion(Pawn pawn, ChessBoard board) {
+    private DisplayBoard chess;
+
+    public PawnPromotion(Pawn pawn, ChessBoard board,DisplayBoard chess) {
         super("Chess");
         this.pawn = pawn;
         this.board = board;
+        this.chess=chess;
+        this.pawnPos = ChessBoard.coverNumToCnessCord(this.pawn.getPosition());
         setBounds(600, 100, 600, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
@@ -53,6 +58,13 @@ public class PawnPromotion extends JFrame {
         btn.addActionListener(e -> {
             String type = this.group.getSelection().getActionCommand();
             this.board.promotingOfPawn(this.pawn, type);
+            this.chess.dispose();
+            this.chess = new DisplayBoard(this.board.getBoard());
+            String mess = String.format("PAWN was promotion to %s <%s>.%n",
+                    type,this.pawnPos);
+            JOptionPane.showMessageDialog(null, mess);
+
+
             JButton butt = (JButton) e.getSource();
             SwingUtilities.getWindowAncestor(butt).dispose();
         });
@@ -63,7 +75,7 @@ public class PawnPromotion extends JFrame {
     private JPanel getTitleProm() {
         JPanel panel = makePanel(20);
         JLabel title = new JLabel(String.format("PAWN <%s> can be promotion.%n",
-                ChessBoard.coverNumToCnessCord(this.pawn.getPosition())));
+                this.pawnPos));
         title.setFont(new Font("Arial", Font.PLAIN, 20));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 

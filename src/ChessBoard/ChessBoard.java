@@ -87,7 +87,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         board[7][6] = new Knight(false, new int[]{7, 6});
 
         board[0][2] = new Bishop(true, new int[]{0, 2});
-       // board[0][5] = new Bishop(true, new int[]{0, 5});
+        // board[0][5] = new Bishop(true, new int[]{0, 5});
         board[7][2] = new Bishop(false, new int[]{7, 2});
         board[7][5] = new Bishop(false, new int[]{7, 5});
 
@@ -271,7 +271,6 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
     }
 
 
-
 //    public boolean isMoveValid() {
 //        return isMoveValid(
 //                new King(true, new int[]{2, 3},
@@ -360,14 +359,27 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
     }
 
     @Override
-    public void promotingOfPawn(Pawn proPawn,String type) {
+    public void promotingOfPawn(Pawn proPawn, String type) {
 
         int[] pos = proPawn.getPosition();
+        boolean color = proPawn.getColor();
 
-//        this.board[pos[0]][pos[1]] = newPiece;
-//
-//        System.out.printf("PAWN was promotion to %s <%s>.%n",
-//                newPiece.getType(), coverNumToCnessCord(newPiece.getPosition()));
+        Piece newPiece;
+        switch (type) {
+            case "ROOK":
+                newPiece = new Rook(color, pos);
+                break;
+            case "KNIGHT":
+                newPiece = new Knight(color, pos);
+                break;
+            case "BISHOP":
+                newPiece = new Bishop(color, pos);
+                break;
+            default:
+                newPiece = new Queen(color, pos);
+        }
+        this.board[pos[0]][pos[1]] = newPiece;
+
     }
 //    @Override
 //    public void promotingOfPawn(Pawn proPawn) {
