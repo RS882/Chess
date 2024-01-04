@@ -24,6 +24,7 @@ public class PawnPromotion extends JFrame {
         this.board = board;
         this.chess=chess;
         this.pawnPos = ChessBoard.coverNumToCnessCord(this.pawn.getPosition());
+
         setBounds(600, 100, 600, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
@@ -63,7 +64,6 @@ public class PawnPromotion extends JFrame {
             String mess = String.format("PAWN was promotion to %s <%s>.%n",
                     type,this.pawnPos);
             JOptionPane.showMessageDialog(null, mess);
-
 
             JButton butt = (JButton) e.getSource();
             SwingUtilities.getWindowAncestor(butt).dispose();

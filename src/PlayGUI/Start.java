@@ -10,7 +10,6 @@ import Pieces.Pawn;
 import java.awt.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Start extends JFrame {
     private ButtonGroup group;
@@ -33,27 +32,18 @@ public class Start extends JFrame {
         this.container = super.getContentPane();
         this.container.setLayout(new BoxLayout(this.container, BoxLayout.Y_AXIS));
 
-
         this.board = new ChessBoard();
 
         this.chess = new DisplayBoard(this.board.getBoard());
-        //JOptionPane.showMessageDialog(null, "Chess game started!");
+        JOptionPane.showMessageDialog(null, "Chess game started!");
+
         this.pieceChoise = new JPanel();
         this.pieceChoise.setLayout(new BoxLayout(this.pieceChoise, BoxLayout.Y_AXIS));
-
-
-        this.pieceChoise.add(getGap());
-
         this.pieceChoise.add(getMoveTitle());
-        this.pieceChoise.add(getGap());
-
         this.pieceChoise.add(getRButtonGroup());
 
         this.container.add(this.pieceChoise);
-
-        this.container.add(getGap());
         this.container.add(getInputField());
-        this.container.add(getGap());
 
         revalidate();
         repaint();
@@ -61,54 +51,55 @@ public class Start extends JFrame {
 //        setLocationRelativeTo(null);
     }
 
-    private Component getGap(int h) {
-        return Box.createRigidArea(new Dimension(0, h));
+
+    private JPanel makePanel(int top) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(1, 1));
+        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.setBorder(BorderFactory.createEmptyBorder(top, 20, 20, 20));
+        return panel;
     }
 
-    private Component getGap() {
-        return getGap(20);
-    }
-
-    private JLabel getMoveTitle() {
+    private JPanel getMoveTitle() {
         return getMoveTitle("");
     }
 
-    private JLabel getMoveTitle(String addMess) {
+    private JPanel getMoveTitle(String addMess) {
+        JPanel panel = makePanel(20);
+
         String movTitle = String.format("%sMove of the <%s> pieces. Choose piece:", addMess,
                 (this.board.getColorOfMove()) ? "black" : "white");
-
         JLabel mov = new JLabel(movTitle);
         mov.setFont(new Font("Arial", Font.PLAIN, 20));
-        mov.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        return mov;
+
+        panel.add(mov);
+        return panel;
     }
 
     private JPanel getRButtonGroup() {
-        JPanel bGroup = new JPanel();
-        bGroup.setLayout(new GridLayout(4, 4));
-        bGroup.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JPanel panel = makePanel(0);
+        panel.setLayout(new GridLayout(4, 4));
 
         this.group = new ButtonGroup();
         ArrayList<Piece> pieces = this.board.getPieces(this.board.getColorOfMove());
         for (Piece pi : pieces) {
             String rbText = String.format("%s<%s>",
                     PieceTypes.getChar(pi.getType(), pi.getColor()),
-                    this.board.coverNumToCnessCord(pi.getPosition()));
+                    ChessBoard.coverNumToCnessCord(pi.getPosition()));
             JRadioButton rb = new JRadioButton(rbText);
             rb.setActionCommand("" + pi.getIdOfPieceThisType());
             rb.setFont(new Font("Serif", Font.PLAIN, 15));
 
             this.group.add(rb);
-            bGroup.add(rb);
+            panel.add(rb);
         }
-        bGroup.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
-        return bGroup;
+
+        return panel;
     }
 
     private JPanel getInputField() {
-        JPanel inputGroup = new JPanel();
-        inputGroup.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        inputGroup.setLayout(new BoxLayout(inputGroup, BoxLayout.X_AXIS));
+        JPanel panel = makePanel(0);
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 
         JLabel title = new JLabel("Enter your move(exam : d2) : ");
         title.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -117,15 +108,23 @@ public class Start extends JFrame {
         this.move.setMaximumSize(new Dimension(100, 30));
         this.move.setPreferredSize(new Dimension(100, 30));
 
+        panel.add(title);
+        panel.add(this.move);
+        panel.add(new JLabel("  "));
+        panel.add(getBtn());
+        return panel;
+    }
 
-        inputGroup.add(title);
-        inputGroup.add(this.move);
-        inputGroup.add(new JLabel("  "));
+    private JPanel getActionTitle(String actionNow) {
+        JPanel panel = makePanel(20);
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 20));
 
-        inputGroup.add(getBtn());
+        JLabel check = new JLabel(actionNow);
+        check.setFont(new Font("Arial", Font.PLAIN, 20));
+        check.setForeground(Color.RED);
 
-        inputGroup.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
-        return inputGroup;
+        panel.add(check);
+        return panel;
     }
 
     private JButton getBtn() {
@@ -141,32 +140,29 @@ public class Start extends JFrame {
 
                 String moveCord = this.move.getText();
                 String moveMessage = this.board.movePiece(movingPiece,
-                        convertChessCordToNub(moveCord));
+                        convertChessCordToInt(moveCord));
 
                 JOptionPane.showMessageDialog(null, moveMessage);
 
-                if (movingPiece.isPromotion()) {
-                    showPromotion(movingPiece);
-                }
-
+                if (movingPiece.isPromotion()) showPromotion(movingPiece);
                 boolean color = this.board.getColorOfMove();
-                String checkNow = "";
 
+                String actionNow = "";
 
                 if (this.board.isStalemate(color)) {
-                    checkNow = String.format("Game over.%n Is stalemate.%n");
-                    JOptionPane.showMessageDialog(null, checkNow);
+                    actionNow = String.format("Game over.%n Is stalemate.%n");
+                    JOptionPane.showMessageDialog(null, actionNow);
                     btn.setEnabled(false);
                     this.move.setEnabled(false);
                 } else if (this.board.isCheckmate(color)) {
-                    checkNow = String.format("Game over.%n Is Checkmate.%n <%s> win",
+                    actionNow = String.format("Game over.%n Is Checkmate.%n <%s> win",
                             !color ? "Black" : "White");
-                    JOptionPane.showMessageDialog(null, checkNow);
+                    JOptionPane.showMessageDialog(null, actionNow);
                     btn.setEnabled(false);
                     this.move.setEnabled(false);
                 } else if (this.board.isCheck(color)) {
-                    checkNow = String.format("Check to <%s>! ", color ? "black" : "white");
-                    JOptionPane.showMessageDialog(null, checkNow);
+                    actionNow = String.format("Check to <%s>! ", color ? "black" : "white");
+                    JOptionPane.showMessageDialog(null, actionNow);
                 }
 
                 this.chess.dispose();
@@ -174,18 +170,9 @@ public class Start extends JFrame {
 
                 this.pieceChoise.removeAll();
 
-                if (!checkNow.equals("")) {
-                    this.pieceChoise.add(getGap());
-                    JLabel check = new JLabel(checkNow);
-                    check.setFont(new Font("Arial", Font.PLAIN, 20));
-                    check.setForeground(Color.RED);
-                    check.setAlignmentX(Component.RIGHT_ALIGNMENT);
-                    this.pieceChoise.add(check);
+                if (!actionNow.equals("")) this.pieceChoise.add(getActionTitle(actionNow));
 
-                }
-                this.pieceChoise.add(getGap());
                 this.pieceChoise.add(getMoveTitle());
-                this.pieceChoise.add(getGap());
                 this.pieceChoise.add(getRButtonGroup());
                 this.move.setText("");
 
@@ -210,7 +197,7 @@ public class Start extends JFrame {
 
     }
 
-    private int[] convertChessCordToNub(String str) throws IncorrectValueOfPieceMove {
+    private int[] convertChessCordToInt(String str) throws IncorrectValueOfPieceMove {
         int[] res = new int[2];
         char[] chArr = str.toLowerCase().toCharArray();
         if (chArr.length >= 2 &&
@@ -220,11 +207,8 @@ public class Start extends JFrame {
             res[1] = chArr[0] - 'a';
 
         } else throw new IncorrectValueOfPieceMove();
-
         return res;
-
     }
-
 }
 
 class IncorrectValueOfPieceMove extends Exception {
