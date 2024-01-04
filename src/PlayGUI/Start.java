@@ -144,7 +144,9 @@ public class Start extends JFrame {
 
                 JOptionPane.showMessageDialog(null, moveMessage);
 
-                if (movingPiece.isPromotion()) showPromotion(movingPiece);
+                if (movingPiece.isPromotion()) {
+                   showPromotion(movingPiece);
+                };
                 boolean color = this.board.getColorOfMove();
 
                 String actionNow = "";
@@ -176,6 +178,7 @@ public class Start extends JFrame {
                 this.pieceChoise.add(getRButtonGroup());
                 this.move.setText("");
 
+
                 revalidate();
                 repaint();
                 pack();
@@ -193,7 +196,7 @@ public class Start extends JFrame {
 
     private void showPromotion(Piece pawn) {
         if (!(pawn instanceof Pawn)) return;
-        PawnPromotion promo = new PawnPromotion((Pawn) pawn, this.board, this.chess);
+        PawnPromotion promo = new PawnPromotion((Pawn) pawn, this.board, this.chess, this);
 
     }
 

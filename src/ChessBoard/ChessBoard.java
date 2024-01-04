@@ -381,49 +381,6 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         this.board[pos[0]][pos[1]] = newPiece;
 
     }
-//    @Override
-//    public void promotingOfPawn(Pawn proPawn) {
-//        Scanner sc = new Scanner(System.in);
-//        boolean color = proPawn.getColor();
-//        int[] pos = proPawn.getPosition();
-//        System.out.printf("The pawn <%s> can be promotion.%n",
-//                coverNumToCnessCord(proPawn.getPosition()));
-//        char num;
-//        try {
-//            System.out.println("To select a piece enter a number:");
-//            System.out.printf("%s - enter 1%n", PieceTypes.getChar(PieceTypes.QUEEN, color));
-//            System.out.printf("%s - enter 2%n", PieceTypes.getChar(PieceTypes.ROOK, color));
-//            System.out.printf("%s - enter 3%n", PieceTypes.getChar(PieceTypes.KNIGHT, color));
-//            System.out.printf("%s - enter 4%n", PieceTypes.getChar(PieceTypes.BISHOP, color));
-//
-//            num = sc.nextLine().charAt(0);
-//        } catch (Exception ex) {
-//            num = 1;
-//        }
-//        Piece newPiece;
-//        switch (num) {
-//            case '1':
-//                newPiece = new Queen(color, pos);
-//                break;
-//            case '2':
-//                newPiece = new Rook(color, pos);
-//                break;
-//            case '3':
-//                newPiece = new Knight(color, pos);
-//                break;
-//            case '4':
-//                newPiece = new Bishop(color, pos);
-//                break;
-//            default:
-//                System.out.println("Piece is unselected!");
-//                System.out.println("Atomically selected QUEEN");
-//                newPiece = new Queen(color, pos);
-//        }
-//        this.board[pos[0]][pos[1]] = newPiece;
-//
-//        System.out.printf("PAWN was promotion to %s <%s>.%n",
-//                newPiece.getType(), coverNumToCnessCord(newPiece.getPosition()));
-//    }
 
     @Override
     public void castling(boolean color, Rook rook) {

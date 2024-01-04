@@ -7,42 +7,33 @@ import Pieces.Pawn;
 import javax.swing.*;
 import java.awt.*;
 
-public class PawnPromotion extends JFrame {
+public class PawnPromotion extends JDialog {
 
     private Pawn pawn;
     private String pawnPos;
-
     private ButtonGroup group;
-
     private ChessBoard board;
-
     private DisplayBoard chess;
 
-    public PawnPromotion(Pawn pawn, ChessBoard board,DisplayBoard chess) {
-        super("Chess");
+    public PawnPromotion(Pawn pawn, ChessBoard board,DisplayBoard chess,Frame parentContainer) {
+
         this.pawn = pawn;
         this.board = board;
         this.chess=chess;
         this.pawnPos = ChessBoard.coverNumToCnessCord(this.pawn.getPosition());
 
-        setBounds(600, 100, 600, 500);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setVisible(true);
-
-        Container container = super.getContentPane();
-        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        JDialog container =new JDialog( parentContainer,"Pawn`s promotion.", true);
+        container.setLayout(new GridLayout(3, 1));
+        container.setBounds(600, 100, 600, 500);
+        container.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         container.add(getTitleProm());
-
         container.add(getbGroup());
-
         container.add(getBtn());
 
-        revalidate();
-        repaint();
-        pack();
+        container.pack();
+        container.setVisible(true);
     }
-
     private JPanel makePanel(int top) {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1, 1));
