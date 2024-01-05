@@ -4,6 +4,7 @@ import javax.swing.*;
 
 
 import ChessBoard.ChessBoard;
+import LogWriter.FileWriter;
 import Piece.*;
 import Pieces.Pawn;
 import Pieces.Rook;
@@ -25,7 +26,8 @@ public class Start extends JFrame {
     public Start() {
         // Constructor for Start class
         super("Chess");
-        try{
+        FileWriter.writeToFileStartText();
+        try {
             // Setting up JFrame
             setBounds(600, 100, 600, 500);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,7 +53,7 @@ public class Start extends JFrame {
             revalidate();
             repaint();
             pack();
-        }catch (Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Something went wrong...");
         }
 
@@ -73,6 +75,7 @@ public class Start extends JFrame {
     private JPanel getMoveTitle() {
         return getMoveTitle("");
     }
+
     // Method to get the move title panel with additional message
     private JPanel getMoveTitle(String addMess) {
         JPanel panel = makePanel(20);
@@ -85,6 +88,7 @@ public class Start extends JFrame {
         panel.add(mov);
         return panel;
     }
+
     // Method to get the radio button group panel for piece selection
     private JPanel getRButtonGroup() {
         JPanel panel = makePanel(0);
@@ -106,6 +110,7 @@ public class Start extends JFrame {
 
         return panel;
     }
+
     // Method to get the input field panel
     private JPanel getInputField() {
         JPanel panel = makePanel(0);
@@ -124,6 +129,7 @@ public class Start extends JFrame {
         panel.add(getBtn());
         return panel;
     }
+
     // Method to get the action title panel with a specified action message
     private JPanel getActionTitle(String actionNow) {
         JPanel panel = makePanel(20);
@@ -136,6 +142,7 @@ public class Start extends JFrame {
         panel.add(check);
         return panel;
     }
+
     // Method to get the "Move" button
     private JButton getBtn() {
         JButton btn = new JButton(" Move ");
@@ -153,6 +160,7 @@ public class Start extends JFrame {
                         convertChessCordToInt(moveCord));
 
                 JOptionPane.showMessageDialog(null, moveMessage);
+                FileWriter.writeRecordToFile(moveMessage);
 
                 if (movingPiece.isPromotion()) {
                     showPromotion(movingPiece);
@@ -165,23 +173,27 @@ public class Start extends JFrame {
                 if (this.board.isStalemate(color)) {
                     actionNow = String.format("Game over.%n Is stalemate.%n");
                     JOptionPane.showMessageDialog(null, actionNow);
+                    FileWriter.writeRecordToFile(actionNow);
                     btn.setEnabled(false);
                     this.move.setEnabled(false);
                 } else if (this.board.isCheckmate(color)) {
                     actionNow = String.format("Game over.%n Is Checkmate.%n <%s> win",
                             !color ? "Black" : "White");
                     JOptionPane.showMessageDialog(null, actionNow);
+                    FileWriter.writeRecordToFile(actionNow);
                     btn.setEnabled(false);
                     this.move.setEnabled(false);
                 } else if (this.board.isCheck(color)) {
                     actionNow = String.format("Check to <%s>! ", color ? "black" : "white");
                     JOptionPane.showMessageDialog(null, actionNow);
+                    FileWriter.writeRecordToFile(actionNow);
                 }
 
                 refreshPieceChoise(actionNow);
 
             } catch (NullPointerException ex) {
                 JOptionPane.showMessageDialog(null, "Choose a piece!");
+
             } catch (IncorrectValueOfPieceMove ex) {
                 JOptionPane.showMessageDialog(null, "Enter correct move! (exam : d2)");
             }
@@ -191,7 +203,7 @@ public class Start extends JFrame {
 
     }
 
-    private void refreshPieceChoise(String actionNow){
+    private void refreshPieceChoise(String actionNow) {
         this.chess.dispose();
         this.chess = new DisplayBoard(this.board.getBoard());
 
@@ -208,6 +220,7 @@ public class Start extends JFrame {
         repaint();
         pack();
     }
+
     private JPanel getCastlingBtn() {
         JPanel panel = makePanel(0);
         JButton btn = new JButton("Casting");
@@ -216,7 +229,7 @@ public class Start extends JFrame {
             ArrayList<Piece> rooks = this.board.getPiece(PieceTypes.ROOK, this.board.getColorOfMove());
             if (rooks.size() == 0) btn.setEnabled(false);
 
-            JDialog container =new JDialog( this,"Castling", true);
+            JDialog container = new JDialog(this, "Castling", true);
             container.setLayout(new GridLayout(3, 1));
             container.setBounds(600, 100, 600, 500);
             container.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -232,6 +245,7 @@ public class Start extends JFrame {
         panel.add(btn);
         return panel;
     }
+
     private JPanel getTitleCast() {
         JPanel panel = Start.makePanel(20);
 
@@ -260,6 +274,7 @@ public class Start extends JFrame {
         }
         return panel;
     }
+
     private JPanel getBtnCast() {
 
         JPanel panel = Start.makePanel(0);
@@ -268,30 +283,31 @@ public class Start extends JFrame {
         btn.setPreferredSize(new Dimension(100, 30));
         btn.addActionListener(e -> {
 
-            try{
+            try {
                 String type = this.group.getSelection().getActionCommand();
 
                 Piece rook = this.board.getPieceById(Integer.parseInt(type));
 
-                String mess =this.board.castling(this.board.getColorOfMove(),(Rook) rook);
+                String mess = this.board.castling(this.board.getColorOfMove(), (Rook) rook);
 
                 JOptionPane.showMessageDialog(null, mess);
-
+                FileWriter.writeRecordToFile(mess);
                 refreshPieceChoise("");
-
 
 
                 JButton butt = (JButton) e.getSource();
                 SwingUtilities.getWindowAncestor(butt).dispose();
 
             } catch (NullPointerException ex) {
-                JOptionPane.showMessageDialog(null, "Choose a piece!");}
+                JOptionPane.showMessageDialog(null, "Choose a piece!");
+            }
 
         });
         panel.add(btn);
         return panel;
 
     }
+
     private void showPromotion(Piece pawn) {
         if (!(pawn instanceof Pawn)) return;
         PawnPromotion promo = new PawnPromotion((Pawn) pawn, this.board, this.chess, this);
@@ -311,6 +327,7 @@ public class Start extends JFrame {
         return res;
     }
 }
+
 // Custom exception class for incorrect piece move value
 class IncorrectValueOfPieceMove extends Exception {
 

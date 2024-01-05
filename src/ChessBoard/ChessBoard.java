@@ -15,7 +15,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
     private Piece[][] board;
     private Piece lastMove;
-    private boolean colorOfMove;
+    private static boolean colorOfMove;
     private Pawn pawnEnPas;
     // Constructor initializes the chessboard and pieces
     public ChessBoard() {
@@ -55,8 +55,8 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
     }
 
-    public boolean getColorOfMove() {
-        return this.colorOfMove;
+    public static boolean getColorOfMove() {
+        return colorOfMove;
     }
 
     // Displays the current state of the chessboard
@@ -196,7 +196,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         String res = "";
         int x = end[1];
         int y = end[0];
-        if (isSout) res = String.format("%s moves <%s> => <%s>.%n",
+        if (isSout) res = String.format("%s moves <%s> => <%s>.\n",
                 piece.getType(),
                 coverNumToCnessCord(piece.getPosition()),
                 coverNumToCnessCord(end));
@@ -217,7 +217,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
         if (isSout) {
             this.lastMove = piece;
-            this.colorOfMove = !this.colorOfMove;
+            colorOfMove = !colorOfMove;
         }
         return res;
     }
@@ -234,7 +234,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
     // Handles the capturing of one piece by another
     @Override
     public String capturing(Piece move, Piece take) {
-        return String.format("%s takes %s on <%s>.%n",
+        return String.format("%s takes %s on <%s>.\n",
                 move.getType(),
                 take.getType(),
                 coverNumToCnessCord(take.getPosition()));
@@ -315,7 +315,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
                     coverNumToCnessCord(king.getPosition()),
                     coverNumToCnessCord(rook.getPosition()));
         }
-        this.colorOfMove = !this.colorOfMove;
+        colorOfMove = !colorOfMove;
         return res;
     }
 

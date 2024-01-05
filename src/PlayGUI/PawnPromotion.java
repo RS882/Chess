@@ -1,6 +1,7 @@
 package PlayGUI;
 
 import ChessBoard.ChessBoard;
+import LogWriter.FileWriter;
 import Piece.PieceTypes;
 import Pieces.Pawn;
 
@@ -56,6 +57,7 @@ public class PawnPromotion extends JDialog {
             // Show promotion message
             String mess = String.format("PAWN was promoted to %s <%s>.%n", type, this.pawnPos);
             JOptionPane.showMessageDialog(null, mess);
+            FileWriter.writeRecordToFile(mess);
 
             JButton butt = (JButton) e.getSource();
             SwingUtilities.getWindowAncestor(butt).dispose(); // Close the dialog window

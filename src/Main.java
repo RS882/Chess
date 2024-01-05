@@ -5,8 +5,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-    //    Start start =new Start();
-        FileWriter.whriteToFile("xzczcxc1");
+     Start start =new Start();
 
     }
 }
