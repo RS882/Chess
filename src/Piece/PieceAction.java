@@ -1,32 +1,13 @@
 package Piece;
 
-import ChessBoard.ChessBoard;
-
 import java.util.ArrayList;
 
+// Interface defining common actions for chess pieces
 public interface PieceAction {
 
-    boolean isValidMove( int[] end);
+    // Checks if the move to the specified position is valid for the piece
+    boolean isValidMove(int[] end);
 
+    // Gets a list of available moves for the piece
     ArrayList<int[]> getAvailableMoves();
 }
-//        Метод isValidMove для каждой фигуры:
-//        Проверка корректности хода с учетом их правил.
-//        Методы для определения возможных ходов:
-//        getAvailableMoves
-//        Методы для специфических действий:
-//        isEnPassant
-//        isCastling
-//        isPromotion
-
- //   isValidMove в Piece:
-//
-//        Этот метод принадлежит конкретной шахматной фигуре (пешка, конь,
-//        слон и т. д.) и определяет, является ли этот ход действительным для
-//        этой фигуры в контексте ее собственных правил движения. Он проверяет,
-//        соответствует ли переданный ход правилам движения конкретной фигуры:
-//        может ли она сделать такой ход на пустой доске, игнорируя другие фигуры
-//        и правила игры. Этот метод может быть использован для проверки, допустимо
-//        ли перемещение в соответствии с возможностями конкретной фигуры.
-//        В целом, isValidMove в ChessBoard работает на уровне доски и правил игры,
-//        тогда как isValidMove в Piece описывает возможные ходы для конкретной фигуры.

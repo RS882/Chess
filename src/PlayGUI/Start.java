@@ -13,48 +13,55 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Start extends JFrame {
-    private ButtonGroup group;
-    private JTextField move;
 
-    private DisplayBoard chess;
+    private ButtonGroup group; // Button group for piece selection
+    private JTextField move; // Text field for move input
+    private DisplayBoard chess; // DisplayBoard instance
+    private ChessBoard board; // ChessBoard instance
+    private Container container; // Container for components
+    private JPanel pieceChoice; // Panel for piece selection
 
-    private ChessBoard board;
-    private Container container;
-
-    private JPanel pieceChoise;
 
     public Start() {
+        // Constructor for Start class
         super("Chess");
-        //        setSize(400, 400);
-        setBounds(600, 100, 600, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+        try{
+            // Setting up JFrame
+            setBounds(600, 100, 600, 500);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setVisible(true);
 
-        this.container = super.getContentPane();
-        this.container.setLayout(new BoxLayout(this.container, BoxLayout.Y_AXIS));
+            this.container = super.getContentPane();
+            this.container.setLayout(new BoxLayout(this.container, BoxLayout.Y_AXIS));
+// Initializing chess board and display
+            this.board = new ChessBoard();
 
-        this.board = new ChessBoard();
+            this.chess = new DisplayBoard(this.board.getBoard());
+            JOptionPane.showMessageDialog(null, "Chess game started!");
+            // Creating panels and components
+            this.pieceChoice = new JPanel();
+            this.pieceChoice.setLayout(new BoxLayout(this.pieceChoice, BoxLayout.Y_AXIS));
 
-        this.chess = new DisplayBoard(this.board.getBoard());
-        JOptionPane.showMessageDialog(null, "Chess game started!");
+            this.pieceChoice.add(getMoveTitle());
+            this.pieceChoice.add(getRButtonGroup());
+            this.container.add(this.pieceChoice);
+            this.container.add(getCastlingBtn());
+            this.container.add(getInputField());
 
-        this.pieceChoise = new JPanel();
-        this.pieceChoise.setLayout(new BoxLayout(this.pieceChoise, BoxLayout.Y_AXIS));
+            revalidate();
+            repaint();
+            pack();
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Something went wrong...");
+        }
 
-        this.pieceChoise.add(getMoveTitle());
-        this.pieceChoise.add(getRButtonGroup());
-        this.container.add(this.pieceChoise);
-        this.container.add(getCastlingBtn());
-        this.container.add(getInputField());
 
-        revalidate();
-        repaint();
-        pack();
-//        setLocationRelativeTo(null);
     }
 
 
+    // Method to create a JPanel with specific top margin
     public static JPanel makePanel(int top) {
+        // Creates a JPanel with specific top margin
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1, 1));
         panel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -62,12 +69,11 @@ public class Start extends JFrame {
         return panel;
     }
 
-
-
+    // Method to get the move title panel
     private JPanel getMoveTitle() {
         return getMoveTitle("");
     }
-
+    // Method to get the move title panel with additional message
     private JPanel getMoveTitle(String addMess) {
         JPanel panel = makePanel(20);
 
@@ -79,7 +85,7 @@ public class Start extends JFrame {
         panel.add(mov);
         return panel;
     }
-
+    // Method to get the radio button group panel for piece selection
     private JPanel getRButtonGroup() {
         JPanel panel = makePanel(0);
         panel.setLayout(new GridLayout(4, 4));
@@ -100,7 +106,7 @@ public class Start extends JFrame {
 
         return panel;
     }
-
+    // Method to get the input field panel
     private JPanel getInputField() {
         JPanel panel = makePanel(0);
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
@@ -118,7 +124,7 @@ public class Start extends JFrame {
         panel.add(getBtn());
         return panel;
     }
-
+    // Method to get the action title panel with a specified action message
     private JPanel getActionTitle(String actionNow) {
         JPanel panel = makePanel(20);
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 20));
@@ -130,7 +136,7 @@ public class Start extends JFrame {
         panel.add(check);
         return panel;
     }
-
+    // Method to get the "Move" button
     private JButton getBtn() {
         JButton btn = new JButton(" Move ");
         btn.setMaximumSize(new Dimension(100, 30));
@@ -189,12 +195,12 @@ public class Start extends JFrame {
         this.chess.dispose();
         this.chess = new DisplayBoard(this.board.getBoard());
 
-        this.pieceChoise.removeAll();
+        this.pieceChoice.removeAll();
 
-        if (!actionNow.equals("")) this.pieceChoise.add(getActionTitle(actionNow));
+        if (!actionNow.equals("")) this.pieceChoice.add(getActionTitle(actionNow));
 
-        this.pieceChoise.add(getMoveTitle());
-        this.pieceChoise.add(getRButtonGroup());
+        this.pieceChoice.add(getMoveTitle());
+        this.pieceChoice.add(getRButtonGroup());
         this.move.setText("");
 
 
@@ -305,7 +311,7 @@ public class Start extends JFrame {
         return res;
     }
 }
-
+// Custom exception class for incorrect piece move value
 class IncorrectValueOfPieceMove extends Exception {
 
 }

@@ -3,64 +3,10 @@ import PlayGUI.Start;
 public class Main {
     public static void main(String[] args) {
 
-//        ChessBoard board =new ChessBoard();
-////        System.out.println(board);
-//     board.displayBoard();
 
-//        PlayChess chess = new PlayChess();
         Start start =new Start();
 
-//board.castling(false, new Rook(false,new int[]{7,7},3));
-//        board.displayBoard();
-//        for (Piece[] str:board.getBoard()) {
-//            for (Piece pi: str) {
-//                if(pi!=null && pi.isPromotion()) board.promotingOfPawn((Pawn) pi);
-//            }
-//        }
-//        board.displayBoard();
-//        System.out.println(board.isStalemate(false));
-//     System.out.println( board.isMoveValid());
-//        board.movePiece();
-//        board.displayBoard();
-//        System.out.println(board.isCheck(false));
-//System.out.println( board.isCheckmate(true));
 
-
-//        System.out.println(board.coverNubToCnessCord(new int[]{3,3}));
-
-
-//     //     System.out.println(Arrays.toString(pawn.getPosition()));
-//                ArrayList<int[]> pos =pawn.getAvailableMoves();
-//
-//        for (int[] el: pos) {
-//            System.out.println(Arrays.toString(el));
-//        }
-
-//        Test test = new Test();
-//
-//        test.displayBoard();
-
-
-//        Knight knight = new Knight(false,new int[]{5,4},3);
-//
-  //     Bishop bishop = new Bishop(true, new int[]{3,4},2);
-//
-       //Queen queen = new Queen(true, new int[]{3,4},0);
-//
-//        King king =new King(false,new int[]{6,2},3);
-//
-//        System.out.println(PieceTypes.QUEEN.getChar(king.getType(),true));
-//        System.out.println(PieceTypes.QUEEN.getChar(king.getType(),false));
-
-       // Rook rook = new Rook(true, new int[]{1,4,});
-        //System.out.println(Arrays.toString(bishop.getPosition()));
-//                ArrayList<int[]> pos =bishop.getAvailableMoves();
-//
-//        for (int[] el: pos) {
-//            System.out.println(Arrays.toString(el));
-//        }
-//        System.out.println(king.isCastling());
-//       System.out.println(king);
     }
 }
 
