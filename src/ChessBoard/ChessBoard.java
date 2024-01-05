@@ -28,6 +28,8 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         initialazePieces(this.board);
     }
     private void initialazePieces(Piece[][] board) {
+
+        //---------------------
         for (int i = 0; i < 8; i++) {
             board[1][i] = new Pawn(true, new int[]{1, i});
            board[6][i] = new Pawn(false, new int[]{6, i});
@@ -336,7 +338,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
         this.board[y][xRookAfterCast] =  rook;
         rook.setPosition(new int[]{y, xRookAfterCast});
         this.board[y][xRookBeforCast] =  null;
-        System.out.println(1111111);
+
         if(isCheck(color)) res= true;
 
         this.board = cloneBoard(newBoard);

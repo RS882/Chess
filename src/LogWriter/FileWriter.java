@@ -15,10 +15,12 @@ public class FileWriter {
     private static File createFile(String path) {
         File file = new File(path);
         try {
-            System.out.println(
-                    (file.createNewFile()) ?
-                            String.format("File created <%s>.%n", file.getName()) :
-                            String.format("File <%s> already exists.%n", file.getName()));
+            if(!file.createNewFile())
+                System.out.printf("File <%s> already exists.%n", file.getName());
+//            System.out.println(
+//                    (file.createNewFile()) ?
+//                           String.format("File created <%s>.%n", file.getName()):
+//                            String.format("File <%s> already exists.%n", file.getName()));
         } catch (IOException e) {
             System.out.printf("File creation error <%s>.%n", e.getMessage());
         }
@@ -29,7 +31,7 @@ public class FileWriter {
         try {
            String rec = String.format("%d. <%s> move.\n %s %s",
                    countOfRecords,
-                   ChessBoard.getColorOfMove()?"Black":"White",
+                   ChessBoard.getColorOfMove()?"White":"Black",
                    text, getDateAndTimeNow());
             writeToFile(rec);
             countOfRecords++;
@@ -56,7 +58,7 @@ public class FileWriter {
         writer.write(text + "\n");
         writer.close();
         stream.close();
-        System.out.printf("Write to <%s> successful.%n", file.getName());
+     //   System.out.printf("Write to <%s> successful.%n", file.getName());
     }
     private static String getDateAndTimeNow(){
         return String.format("{%s %s}",
