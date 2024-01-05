@@ -1,11 +1,12 @@
+import LogWriter.FileWriter;
 import PlayGUI.Start;
 
 public class Main {
     public static void main(String[] args) {
 
 
-        Start start =new Start();
-
+    //    Start start =new Start();
+        FileWriter.whriteToFile("xzczcxc1");
 
     }
 }
