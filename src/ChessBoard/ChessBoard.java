@@ -50,14 +50,14 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
 
         this.board[5][2] = new Knight(true, new int[]{5, 2});
-        //      this.board[7][3] = new Knight(true, new int[]{7, 3}, 2);
-        this.board[2][5] = new Knight(false, new int[]{2, 5});
+        //      this.board[7][3] = new Knight(true, new int[]{7, 3});
+   //     this.board[2][5] = new Knight(false, new int[]{2, 5});
         this.board[0][0] = new Knight(false, new int[]{0, 0});
 
         this.board[0][2] = new Bishop(true, new int[]{0, 2});
         this.board[2][2] = new Bishop(true, new int[]{2, 2});
         this.board[6][6] = new Bishop(false, new int[]{6, 6});
-        //this.board[1][5] = new Bishop(false, new int[]{1, 5});
+       // this.board[1][5] = new Bishop(false, new int[]{1, 5});
 
         this.board[5][3] = new Queen(true, new int[]{5, 3});
         this.board[2][6] = new Queen(false, new int[]{2, 6});
@@ -188,7 +188,6 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
             Predicate<Integer> isPawn2 = dy -> end[0] == y + dy * 2 && end[1] == x && (this.board[y + dy][x] != null
                     || this.board[y + dy * 2][x] != null);
-
 
 
             Predicate<Integer> isPawnEnPas = num ->
@@ -374,7 +373,7 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
 
     @Override
     public String castling(boolean color, Rook rook) {
-        Piece king = getPiece(PieceTypes.KING, color).get(0);
+        King king =(King) getPiece(PieceTypes.KING, color).get(0);
         String res = "";
         if (!rook.isCastling() || !king.isCastling() || ((King) king).getCheck()) {
             return "Castling is impossible!";
@@ -399,20 +398,48 @@ public class ChessBoard implements ChessBoardMove, ChessBoardAddAction, ChessBoa
                 this.board[y][x] = null;
                 this.board[y][xR] = null;
             };
-
+            boolean kindOfCast = true;// true-long, false-short
             if (dY < 0 && xR == 7) {
-                if (isCastImp.test(new int[]{3, x})) return "Castling is impossible!";
+
+                if (isCastImp.test(new int[]{3, x})
+                || isCheckByCastling(false,color, king,rook)) return "Castling is impossible!";
                 makeCast.accept(new int[]{6, 5});
             } else if (dY > 0 && xR == 0) {
-                if (isCastImp.test(new int[]{x, 0})) return "Castling is impossible!";
+
+                if (isCastImp.test(new int[]{x, 0})
+               || isCheckByCastling(true,color, king,rook)) return "Castling is impossible!";
                 makeCast.accept(new int[]{2, 3});
-            }
+            } else return "Castling is impossible!";
+
             res = String.format("Castling is done!%n");
-            res+=String.format("KING to <%s> ROOK to <%s>.",
+            res += String.format("KING to <%s> ROOK to <%s>.",
                     coverNumToCnessCord(king.getPosition()),
                     coverNumToCnessCord(rook.getPosition()));
         }
         this.colorOfMove = !this.colorOfMove;
+        return res;
+    }
+
+    private boolean isCheckByCastling(boolean kindOfCast, boolean color, King king, Rook rook) {
+        Piece[][] newBoard = cloneBoard();
+        boolean res=false;
+        int y = (color) ? 0 : 7;
+        int xKingAfterCast = (kindOfCast) ? 2 : 6;
+        int xRookAfterCast = (kindOfCast) ? 3 : 5;
+        int xRookBeforCast= (kindOfCast) ? 0 : 7;
+
+        this.board[y][xKingAfterCast] =  king;
+        king.setPosition(new int[]{y, xKingAfterCast});
+        this.board[y][4] =  null;
+
+        this.board[y][xRookAfterCast] =  rook;
+        rook.setPosition(new int[]{y, xRookAfterCast});
+        this.board[y][xRookBeforCast] =  null;
+        System.out.println(1111111);
+        if(isCheck(color)) res= true;
+
+        this.board = cloneBoard(newBoard);
+
         return res;
     }
 
