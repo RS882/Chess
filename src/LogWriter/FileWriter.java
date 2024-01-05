@@ -8,9 +8,9 @@ import java.time.LocalTime;
 
 public class FileWriter {
     private static int countOfRecords=1 ;
-    private static String name =  System.currentTimeMillis()+"";
-    private final static File file = createFile("chesslog.txt");
-    ;
+    private static final String name =  System.currentTimeMillis()+"";
+    private final static File file = createFile(name+".log");
+
 
     private static File createFile(String path) {
         File file = new File(path);
@@ -41,8 +41,8 @@ public class FileWriter {
 
     public static void writeToFileStartText() {
         try {
-            String text = String.format("Chess game #%d started.%s",
-                    System.currentTimeMillis(),
+            String text = String.format("Chess game #%s started.%s",
+                    name,
                     getDateAndTimeNow());
             writeToFile(text);
         } catch (IOException e) {
